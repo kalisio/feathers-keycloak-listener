@@ -35,3 +35,6 @@ node_modules
 
 # test tmp files
 test/tmp
+
+# yarn
+yarn.lock
