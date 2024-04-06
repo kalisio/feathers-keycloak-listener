@@ -5,12 +5,8 @@
 ### Installation
 
 ````
-$ npm install @kalisio/feathers-keycloak-listener --save
-````
-or
-
-````
-$ yarn add @kalisio/feathers-keycloak-listener
+$ yarn install
+$ yarn link
 ````
 
 ### Example
@@ -21,7 +17,7 @@ Assuming you have setup a Feathers app:
 
 ````
 // Import Feathers stufff
-import { Service } from '@kalisio/feathers-keycloak-listener'
+import { KeycloakListenerService } from '@kalisio/feathers-keycloak-listener'
 
 // Setup Feathers app
 
@@ -30,7 +26,7 @@ const options = {
   app,
 }
 
-app.use('/api/keycloak_listener', new Service(options))
+app.use('/api/keycloak_listener', new KeycloakListenerService(options))
 ````
 
 ## API
