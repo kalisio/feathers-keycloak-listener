@@ -38,3 +38,7 @@ test/tmp
 
 # yarn
 yarn.lock
+
+# Eclipse
+/\.project
+/\.classpath
