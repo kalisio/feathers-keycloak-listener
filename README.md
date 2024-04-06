@@ -29,7 +29,7 @@ import KeycloakListenerService from '@kalisio/feathers-keycloak-listener/lib/ser
 
 // Setup Feathers app
 
-app.use('/api/keycloak_listener', new KeycloakListenerService({
+app.use('/api/keycloak-events', new KeycloakListenerService({
 	app: app
 }))
 ````
