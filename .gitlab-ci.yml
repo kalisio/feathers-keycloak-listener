@@ -1,0 +1,14 @@
+# File: feathers-keycloak-listener/.gitlab-ci.yml
+
+image: registry.gitlab.com/avcompris/kalisio/avc-kalisio-workspace/avcompris/kalisio-workspace
+
+stages:
+  - install
+
+install:
+  stage: install
+  only:
+    - master
+    - tags
+  script:
+    - yarn install
