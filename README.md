@@ -34,6 +34,26 @@ app.use('/api/keycloak-events', new KeycloakListenerService({
 }))
 ````
 
+This will actually do nothing apart from some
+logging in the console.
+
+To add some business logic, you will have to do this:
+
+````
+app.use('/api/keycloak-events', new KeycloakListenerService({
+	app: app,
+	triggers: [{
+       eventClass: 'AdminEvent',
+       operationType: 'CREATE',
+       resourceType: 'USER',
+       action: (event) => {
+           console.log('Do something with: ' + event.representation.username)
+       }
+   }]
+}))
+````
+
+
 ## API
 
 `feathers-keycloak-listener` consists in a single service that provides the following methods:
