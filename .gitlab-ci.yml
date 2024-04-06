@@ -12,3 +12,4 @@ install:
     - tags
   script:
     - yarn install
+    - yarn link
