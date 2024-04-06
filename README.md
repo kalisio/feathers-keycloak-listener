@@ -9,24 +9,29 @@ $ yarn install
 $ yarn link
 ````
 
-### Example
+### Link from your app
 
-#### Setup the service
+From your app folder:
+
+````
+$ yarn install
+$ yarn link @kalisio/feathers-keycloak-listener
+````
+
+
+### Setup the service
 
 Assuming you have setup a Feathers app:
 
 ````
 // Import Feathers stufff
-import { KeycloakListenerService } from '@kalisio/feathers-keycloak-listener'
+import KeycloakListenerService from '@kalisio/feathers-keycloak-listener/lib/service.js'
 
 // Setup Feathers app
 
-const options = {
-  ...
-  app,
-}
-
-app.use('/api/keycloak_listener', new KeycloakListenerService(options))
+app.use('/api/keycloak_listener', new KeycloakListenerService({
+	app: app
+}))
 ````
 
 ## API
@@ -48,3 +53,5 @@ Notifies the listener of a Keycloak event.
 See the **keycloak-custom-emitter**
 project documentation for examples of
 JSON sent with some event payloads.
+
+
