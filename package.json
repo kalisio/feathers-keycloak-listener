@@ -1,0 +1,41 @@
+{
+    "name": "@kalisio/feathers-keycloak-listener",
+    "description": "Kalisio Keycloak Listener",
+    "version": "0.0.1",
+    "homepage": "https://gitlab.com/avcompris/kalisio/feathers-keycloak-listener",
+    "type": "module",
+    "keywords": [
+      "Kalisio",
+      "Keycloak"
+    ],
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git://gitlab.com/avcompris/kalisio/feathers-keycloak-listener.git"
+    },
+    "contributors": [],
+    "engines": {
+      "node": ">= 16.0.0"
+    },
+    "scripts": {
+      "publish": "git push origin --tags && git push origin",
+      "lint:core": "standard core/**/*.js core/**/*.vue --fix",
+      "lint:map": "standard map/**/*.js map/**/*.vue --fix",
+      "lint": "npm-run-all --serial lint:**"
+    },
+    "standard": {
+      "globals": [
+      ]
+    },
+    "directories": {
+    },
+    "dependencies": {
+      "@feathersjs/errors": "^5.0.8",
+      "ejs": "^2.5.7",
+      "lodash": "^4.17.15"
+    },
+    "devDependencies": {
+      "standard": "^16.0.4"
+    }
+  }
+  
