@@ -16,15 +16,22 @@ const driver = new webdriver.Builder()
 	.withCapabilities(webdriver.Capabilities.firefox()) // Uses RemoteWebDriver
 	.build();
 
+const ready = () => Promise.resolve();
+
+const intent = (message) => new Promise((resolve, project) => {
+	console.log('    intent: ' + message);
+	resolve();
+});
+
 var screenshotCount = 0;
 
 const takeScreenshotAndIncreaseCounter = () => {
 
 	driver.takeScreenshot().then((data) => {
-	
+
 		++screenshotCount;
 		const fileName = screenshotCount.toString().padStart(8, '0') + '.png';
-		console.log('    -> screenshot: ' + fileName);
+		console.log('      -> screenshot: ' + fileName);
 		if (!fs.existsSync('screenshots')) {
 			fs.mkdirSync('screenshots');
 		}
@@ -32,28 +39,29 @@ const takeScreenshotAndIncreaseCounter = () => {
 			if (error) {
 				console.log(error);
 				assert.fail('While taking screenshot: ' + fileName);
+				reject();
 			}
-		})
+		});
 	});
 };
 
 describe('integration_tests', () => {
 
 	it('Make kApp and Keycloak interact', (done) => {
-		
-		driver
-		
-		// Login page
-			.navigate().to('http://localhost:8080/admin/master/console/')
+
+		ready()
+
+		.then(() => intent('Login page'))
+			.then(() => driver.navigate().to('http://localhost:8080/admin/master/console/'))
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
-			
-		// Credentials
+
+		.then(() => intent('Credentials'))
 			.then(() => driver.findElement(By.id('username')).sendKeys('admin'))
 			.then(() => driver.findElement(By.id('password')).sendKeys('adminp'))
 			.then(() => takeScreenshotAndIncreaseCounter())
-			
-		// Submit the login form
+
+		.then(() => intent('Submit the login form'))
 			.then(() => driver.findElement(By.id('kc-login')).click())
 			.then(() => driver.takeScreenshot())
 			.then(() => driver.sleep(3000))
@@ -65,9 +73,9 @@ describe('integration_tests', () => {
 				console.log(error);
 				done(error);
 			});
-			
+
 	});
-	
+
 	after((done) => {
 
 		driver
@@ -78,7 +86,7 @@ describe('integration_tests', () => {
 				console.log(error);
 				done(error);
 			});
-			
+
 	});
 
 });
