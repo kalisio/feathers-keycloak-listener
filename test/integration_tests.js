@@ -63,7 +63,6 @@ describe('integration_tests', () => {
 
 		.then(() => intent('Submit the login form'))
 			.then(() => driver.findElement(By.id('kc-login')).click())
-			.then(() => driver.takeScreenshot())
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
