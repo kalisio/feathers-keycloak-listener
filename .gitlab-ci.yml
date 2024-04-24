@@ -3,13 +3,37 @@
 image: registry.gitlab.com/avcompris/kalisio/avc-kalisio-workspace/avcompris/kalisio-workspace
 
 stages:
-  - install
+  - build
+  - test
 
 install:
-  stage: install
+  stage: build
   only:
     - master
     - tags
   script:
     - yarn install
     - yarn link
+
+mocha:
+  stage: test
+  only:
+    refs:
+      - master
+  artifacts:
+    when: always
+    paths:
+      - test/screenshots
+  before_script:
+    - cd ${CI_PROJECT_DIR}/test
+    - docker-compose down
+    - docker-compose up -d
+    - ../scripts/wait_for_docker_container.sh test_keycloak_1 "Running the server in development mode."
+    - ../scripts/wait_for_docker_container.sh test_selenium_1 "Started Selenium Standalone"
+  script:
+    - cd ${CI_PROJECT_DIR}/test
+    - npm install
+    - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha integration_tests.js
+  after_script:
+    - cd ${CI_PROJECT_DIR}/test
+    - docker-compose down
