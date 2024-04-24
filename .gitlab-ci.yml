@@ -1,6 +1,8 @@
 # File: feathers-keycloak-listener/.gitlab-ci.yml
 
 image: registry.gitlab.com/avcompris/kalisio/avc-kalisio-workspace/avcompris/kalisio-workspace
+variables:
+  DOCKER_HOST: tcp://172.17.0.1:2375
 
 stages:
   - build
