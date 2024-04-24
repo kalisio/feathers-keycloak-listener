@@ -18,20 +18,23 @@ const driver = new webdriver.Builder()
 
 var screenshotCount = 0;
 
-const storeScreenshot = (data) => {
+const takeScreenshotAndIncreaseCounter = () => {
 
-	++screenshotCount;
-	const fileName = screenshotCount.toString().padStart(8, '0') + '.png';
-	console.log('    -> screenshot: ' + fileName);
-	if (!fs.existsSync('screenshots')) {
-		fs.mkdirSync('screenshots');
-	}
-	fs.writeFileSync('screenshots/' + fileName, data, 'base64', (error) => {
-		if (error) {
-			console.log(error);
-			assert.fail('While taking screenshot: ' + fileName);
+	driver.takeScreenshot().then((data) => {
+	
+		++screenshotCount;
+		const fileName = screenshotCount.toString().padStart(8, '0') + '.png';
+		console.log('    -> screenshot: ' + fileName);
+		if (!fs.existsSync('screenshots')) {
+			fs.mkdirSync('screenshots');
 		}
-	})
+		fs.writeFileSync('screenshots/' + fileName, data, 'base64', (error) => {
+			if (error) {
+				console.log(error);
+				assert.fail('While taking screenshot: ' + fileName);
+			}
+		})
+	});
 };
 
 describe('integration_tests', () => {
@@ -43,19 +46,18 @@ describe('integration_tests', () => {
 		// Login page
 			.navigate().to('http://localhost:8080/admin/master/console/')
 			.then(() => driver.sleep(3000))
-			.then(() => driver.takeScreenshot())
-			.then((data) => storeScreenshot(data))
+			.then(() => takeScreenshotAndIncreaseCounter())
 			
 		// Credentials
 			.then(() => driver.findElement(By.id('username')).sendKeys('admin'))
 			.then(() => driver.findElement(By.id('password')).sendKeys('adminp'))
-			.then(() => driver.takeScreenshot())
-			.then((data) => storeScreenshot(data))
+			.then(() => takeScreenshotAndIncreaseCounter())
 			
 		// Submit the login form
 			.then(() => driver.findElement(By.id('kc-login')).click())
 			.then(() => driver.takeScreenshot())
-			.then((data) => storeScreenshot(data))
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
 
 		// End
 			.then(() => done())
