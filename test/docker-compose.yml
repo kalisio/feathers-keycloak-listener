@@ -36,6 +36,22 @@ services:
         # Cannot use "ports 4444:4444", because we use --network=host
         # - 4444:4444
 
+  mongo:
+      image: mongo:4.2
+      ports:
+        - 27017:27017
+
+  frontend:
+      image: tmp/kapp
+      build:
+        context: .
+        dockerfile: kApp.Dockerfile
+      command: ./start_frontend.sh
+      environment:
+        PORT: 8081
+        CLIENT_PORT: 8082
+      network_mode: host
+
 volumes:
    # We use a named volume so the keycloak_event_gateway container can
    # provide its JAR file to the keycloak container.
