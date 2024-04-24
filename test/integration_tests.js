@@ -42,7 +42,9 @@ const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reject) => 
 				reject();
 			}
 		});
+
 	}).then(resolve, reject);
+
 });
 
 describe('integration_tests', () => {
