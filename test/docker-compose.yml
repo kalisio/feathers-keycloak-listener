@@ -52,6 +52,25 @@ services:
         CLIENT_PORT: 8082
       network_mode: host
 
+  api:
+      image: tmp/kapp
+      build:
+        context: .
+        dockerfile: kApp.Dockerfile
+      command: ./start_api.sh
+      depends_on:
+        - mongo
+      environment:
+        DB_URL: mongodb://172.17.0.1:27017/kapp
+        PORT: 8081
+        CLIENT_PORT: 8082
+        KEYCLOAK_URL: http://172.17.0.1:8080/
+        KEYCLOAK_CLIENT_ID: moncoco
+        KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      # network_mode: host
+      ports:
+        - 8081:8081
+
 volumes:
    # We use a named volume so the keycloak_event_gateway container can
    # provide its JAR file to the keycloak container.
