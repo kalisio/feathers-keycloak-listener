@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "mocha": {
+    "timeout": 20000
+  },
+  "dependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.4.0",
+    "selenium-webdriver": "^4.19.0"
+  }
+}

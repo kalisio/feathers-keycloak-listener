@@ -1,0 +1,42 @@
+# File: feathers-keycloak-listener/test/docker-compose.yml
+#
+# Deploys containers for local tests: Keycloak + listener, and Selenium
+#
+
+version: '3.8'
+
+services:
+
+  keycloak_event_gateway:
+      image: kalisio/keycloak-event-gateway
+      environment:
+        TARGET_DIR: /kalisio/artifacts
+      volumes:
+        - artifacts:/kalisio/artifacts
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:22.0.5
+      command: start-dev
+      environment:
+        KC_HOSTNAME: localhost
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: adminp
+      depends_on:
+        - keycloak_event_gateway
+      volumes:
+        - artifacts:/opt/keycloak/providers:ro
+      ports:
+        - 8080:8080
+
+  selenium:
+      image: selenium/standalone-firefox:110.0
+      # Required so Selenium can access Keycloak through http://localhost:8080
+      network_mode: host
+      # ports:
+        # Cannot use "ports 4444:4444", because we use --network=host
+        # - 4444:4444
+
+volumes:
+   # We use a named volume so the keycloak_event_gateway container can
+   # provide its JAR file to the keycloak container.
+   artifacts:
