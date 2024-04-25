@@ -45,7 +45,16 @@ mocha:
     - |
       echo "KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}"
 
-    # We need KEYCLOAK_CLIENT_SECRET to start the API
+    # Now run the kApp API
+    # First, use a shared folder on the DOCKER_HOST, so the Docker container can find it
+    - mkdir -p /shared/feathers-keycloak-listener
+    - |
+      cp ${CI_PROJECT_DIR}/test/resources/kApp/api/src/services.js \
+            /shared/feathers-keycloak-listener/
+
+    # Configuration for a Docker-in-Docker specific platform (David's)
+    - export SERVICES_JS_DIR=/var/lib/gitlab-runners/shared/feathers-keycloak-listener
+    # Note we need KEYCLOAK_CLIENT_SECRET to start the API
     - docker-compose up -d api
     - ../scripts/wait_for_docker_container.sh test_api_1 "Server started listening"
 

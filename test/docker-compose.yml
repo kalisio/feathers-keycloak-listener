@@ -58,6 +58,7 @@ services:
         context: .
         dockerfile: kApp.Dockerfile
       command: ./start_api.sh
+      #command: ls /opt
       depends_on:
         - mongo
       environment:
@@ -66,10 +67,10 @@ services:
         CLIENT_PORT: 8082
         KEYCLOAK_URL: http://172.17.0.1:8080/
         KEYCLOAK_CLIENT_ID: moncoco
-        KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+        KEYCLOAK_CLIENT_SECRET: "${KEYCLOAK_CLIENT_SECRET}"
         SERVICES_JS_FILE: /opt/kApp/api/src/services.js
       volumes:
-        - ./resources/kApp/api/src:/opt/kApp/api/src:ro
+        - ${SERVICES_JS_DIR:-./resources/kApp/api/src}:/opt/kApp/api/src:ro \
       # network_mode: host
       ports:
         - 8081:8081
