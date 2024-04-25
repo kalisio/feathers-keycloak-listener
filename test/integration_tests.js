@@ -19,7 +19,7 @@ const driver = new webdriver.Builder()
 const ready = () => Promise.resolve();
 
 const intent = (message) => () => new Promise((resolve, project) => {
-	console.log('    intent: ' + message);
+	console.log('    intent: %s', message);
 	resolve();
 });
 
@@ -31,7 +31,7 @@ const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reject) => 
 
 		++screenshotCount;
 		const fileName = screenshotCount.toString().padStart(8, '0') + '.png';
-		console.log('      -> screenshot: ' + fileName);
+		console.log('      -> screenshot: %s', fileName);
 		if (!fs.existsSync('screenshots')) {
 			fs.mkdirSync('screenshots');
 		}
@@ -47,7 +47,16 @@ const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reject) => 
 
 });
 
-const newEmail = 'petitponey' + Math.random().toString(36).slice(2) + '@gmail.com';
+const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
+const newEmail = newUsername + '@gmail.com';
+const newPasswordInKeycloak = 'tutu';
+const newPasswordInKApp = newUsername + '-Pass;word1';
+
+console.log('New user will be:');
+console.log('    username in Keycloak: %s', newUsername);
+console.log('    email: %s', newEmail);
+console.log('    password in Keycloak: %s', newPasswordInKeycloak);
+console.log('    password in kApp: %s', newPasswordInKApp);
 
 describe('integration_tests', () => {
 
@@ -56,7 +65,7 @@ describe('integration_tests', () => {
 		ready()
 
 		// kApp: Log in
-
+/*
 		.then(intent('Open the kApp'))
 			.then(() => driver.navigate().to('http://localhost:8082/'))
 			.then(() => driver.sleep(3000))
@@ -86,7 +95,7 @@ describe('integration_tests', () => {
 		.then(intent('Log out'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
-
+*/
 		// Keycloak: Log in
 		
 		.then(intent('Keycloak: Login page'))
@@ -209,7 +218,7 @@ describe('integration_tests', () => {
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Fill in the user form'))
-			.then(() => driver.findElement(By.id('kc-username')).sendKeys('petitponey'))
+			.then(() => driver.findElement(By.id('kc-username')).sendKeys(newUsername))
 			.then(() => driver.findElement(By.id('kc-email')).sendKeys(newEmail))
 			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
@@ -229,8 +238,8 @@ describe('integration_tests', () => {
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Fill in the password form'))
-			.then(() => driver.findElement(By.id('password')).sendKeys('tutu'))
-			.then(() => driver.findElement(By.id('passwordConfirmation')).sendKeys('tutu'))
+			.then(() => driver.findElement(By.id('password')).sendKeys(newPasswordInKeycloak))
+			.then(() => driver.findElement(By.id('passwordConfirmation')).sendKeys(newPasswordInKeycloak))
 			// Check "Email verified: YES"
 			.then(() => driver.findElement(By.xpath("//div[@class = 'pf-l-bullseye']//span[@class = 'pf-c-switch__toggle']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
@@ -244,6 +253,67 @@ describe('integration_tests', () => {
 			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		// Keycloak: Create a new client, "moncoco"
+
+		.then(intent('Go to the clients page'))
+			.then(() => driver.findElement(By.id('nav-item-clients')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to create a client'))
+			.then(() => driver.findElement(By.css('a.pf-m-primary')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the general settings'))
+			.then(() => driver.findElement(By.id('clientId')).sendKeys('moncoco'))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Go to the next page'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'next']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Go to the next page, again'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'next']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the client settings'))
+			.then(() => driver.findElement(By.xpath("//input[@data-testid = 'redirectUris0']")).sendKeys('http://localhost:8082/*'))
+			.then(() => driver.findElement(By.xpath("//input[@data-testid = 'webOrigins0']")).sendKeys('http://localhost:8082'))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the client form'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Go to the kApp and log in as the new user
+/*
+		.then(intent('Open the kApp'))
+			.then(() => driver.navigate().to('http://localhost:8082/'))
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Dismiss the modal dialog'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Choose "Login with Keycloak"'))
+			.then(() => driver.findElement(By.xpath("//div[text() = 'Login with Keycloak ?']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the login form'))
+			.then(() => driver.findElement(By.id('username')).sendKeys(newEmail))
+			.then(() => driver.findElement(By.id('password')).sendKeys(newPasswordInKeycloak))
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Actually log in'))
+			.then(() => driver.findElement(By.id('kc-login')).click())
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Dismiss the modal dialog'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+*/
 		// Keycloak: Go back to the "Kalisio" realm
 		
 		.then(intent('Keycloak: Login page'))
@@ -288,7 +358,6 @@ describe('integration_tests', () => {
 			console.log(error);
 			done(error);
 		});
-
 	});
 
 	after((done) => {
@@ -301,7 +370,5 @@ describe('integration_tests', () => {
 				console.log(error);
 				done(error);
 			});
-
 	});
-
 });
