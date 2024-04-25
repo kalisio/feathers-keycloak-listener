@@ -49,7 +49,7 @@ mocha:
     - docker-compose up -d api
     - ../scripts/wait_for_docker_container.sh test_api_1 "Server started listening"
 
-    # These three tests do not use the user created in the kApp by the Java plugin
+    # These two tests do not use the user created in the kApp by the Java plugin
     - npx mocha kApp_login_as_kalisio.js
     - npx mocha kApp_login_as_kalisio_through_keycloak.js
 
