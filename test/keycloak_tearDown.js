@@ -6,21 +6,36 @@
 //     $ npm install
 //     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha keycloak_tearDown.js
 
-import { driver, ready, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
 describe('keycloak_tearDown', () => {
 
+	// Do not use an arrow function, so we can use "this"
+	before(function() { context.set(this); });
+
 	it('tears down the Keycloak configuration so we can run the tests again', (done) => {
 
-		ready()
+		context.ready()
 
-		// Keycloak: Go back to the "Kalisio" realm
+		// Keycloak: Log in
 		
 		.then(intent('Keycloak: Login page'))
 			.then(() => driver.navigate().to('http://localhost:8080/admin/master/console/'))
-			.then(() => driver.sleep(5000))
+			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Credentials'))
+			.then(() => driver.findElement(By.id('username')).sendKeys('admin'))
+			.then(() => driver.findElement(By.id('password')).sendKeys('adminp'))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the login form'))
+			.then(() => driver.findElement(By.id('kc-login')).click())
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Go back to the "Kalisio" realm
 
 		.then(intent('Deploy the realm list'))
 			.then(() => driver.findElement(By.id('realm-select')).click())

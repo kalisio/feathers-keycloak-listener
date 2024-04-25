@@ -6,7 +6,7 @@
 //     $ npm install
 //     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha keycloak_setUp.js
 
-import { driver, ready, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
 const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
@@ -20,11 +20,21 @@ console.log('    email: %s', newEmail);
 console.log('    password in Keycloak: %s', newPasswordInKeycloak);
 console.log('    password in kApp: %s', newPasswordInKApp);
 
+context.putIntoCache({
+	newUsername: newUsername,
+	newEmail: newEmail,
+	newPasswordInKeycloak: newPasswordInKeycloak,
+	newPasswordInKApp: newPasswordInKApp,
+});
+
 describe('keycloak_setUp', () => {
+
+	// Do not use an arrow function, so we can use "this"
+	before(function() { context.set(this); });
 
 	it('sets up Keycloak for integration tests with the kApp', (done) => {
 
-		ready()
+		context.ready()
 
 		// Keycloak: Log in
 		
@@ -127,8 +137,8 @@ describe('keycloak_setUp', () => {
 			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys('abcdef1234'))
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'attributes-add-row']")).click())
 			.then(() => driver.sleep(500))
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.key']")).sendKeys('keycloakHttpListenerUrl'))
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys('http://localhost:8082/api/keycloak-events'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.key']")).sendKeys('keycloakEventHttpListenerUrl'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys('http://172.17.0.1:8082/api/keycloak-events'))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Save the attributes'))

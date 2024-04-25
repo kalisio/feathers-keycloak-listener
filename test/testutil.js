@@ -19,6 +19,17 @@ export const context = {
 	set: function(mochaContext) { this.mochaContext = mochaContext; },
 	
 	mochaContext: null,
+	
+	putIntoCache: (data) => {
+		console.log('Storing cache into: cache.json...');
+		fs.writeFileSync('cache.json', JSON.stringify(data), { encoding: 'utf8' });
+	},
+	
+	loadFromCache: () => {
+		console.log('Loading cache from: cache.json...');
+		const json = fs.readFileSync('cache.json', { encoding: 'utf8' });
+		return JSON.parse(json);
+	},
 };
 
 export const intent = (message) => () => new Promise((resolve, reject) => {
@@ -55,3 +66,4 @@ export const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reje
 	}).then(resolve, reject);
 
 });
+
