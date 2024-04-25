@@ -16,10 +16,7 @@ export const context = {
 
 	ready: () => Promise.resolve(),
 
-	set: function(mochaContext) {
-	
-		this.mochaContext = mochaContext;
-	},
+	set: function(mochaContext) { this.mochaContext = mochaContext; },
 	
 	mochaContext: null,
 };
