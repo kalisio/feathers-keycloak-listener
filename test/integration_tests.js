@@ -102,6 +102,80 @@ describe('integration_tests', () => {
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		// Keycloak: Create a realm: "Kalisio"
+
+		.then(intent('Deploy the realm list'))
+			.then(() => driver.findElement(By.id('realm-select')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Add a realm'))
+			.then(() => driver.findElement(By.xpath("//a[@data-testid = 'add-realm']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the realm form'))
+			.then(() => driver.findElement(By.id('kc-realm-name')).sendKeys('Kalisio'))
+			.then(() => takeScreenshotAndIncreaseCounter())
+			
+		.then(intent('Submit the realm form'))
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Add the event listener to the "Kalisio" realm
+
+		.then(intent('Go to the realm settings'))
+			.then(() => driver.findElement(By.id('nav-item-realm-settings')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+			
+		.then(intent('Open the Events tab'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'Events']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+			
+		.then(intent('Open the popup listbox'))
+			.then(() => driver.findElement(By.xpath("//button[contains(@aria-labelledby, 'eventsListeners')]")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+			
+		.then(intent('Select: "keycloak-event-gateway" in the listbox'))
+			.then(() => driver.findElement(By.xpath("//button[. = 'keycloak-event-gateway']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+			
+		.then(intent('Toggle the popup listbox'))
+			.then(() => driver.findElement(By.xpath("//button[contains(@aria-labelledby, 'eventsListeners')]")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Actually save the config'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'saveEventListenerBtn']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Add a "keycloak-event-gateway" user
+
+		.then(intent('Go to the users page'))
+			.then(() => driver.findElement(By.id('nav-item-users')).click())
+			.then(() => driver.sleep(5000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Destroy the "Kalisio" realm
+
+		.then(intent('Go to the realm settings'))
+			.then(() => driver.findElement(By.id('nav-item-realm-settings')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Deploy the action menu'))
+			.then(() => driver.findElement(By.xpath("//div[@data-testid = 'action-dropdown']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to delete the realm'))
+			.then(() => driver.findElement(By.xpath("//a[text() = 'Delete']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Confirm the realm deletion'))
+			.then(() => driver.findElement(By.xpath("//button[@id = 'modal-confirm']")).click())
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+
+		// End
+
 		.then(() => done())
 		.catch((error) => {
 			console.log(error);
