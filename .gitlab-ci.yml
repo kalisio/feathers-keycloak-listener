@@ -30,12 +30,20 @@ mocha:
     - cd ${CI_PROJECT_DIR}/test
     - docker-compose down
     - docker-compose up -d
+    - ../scripts/wait_for_docker_container.sh test_mongo_1 "waiting for connections on port 27017"
+    - ../scripts/wait_for_docker_container.sh test_frontend_1 "Transpiled JS"
     - ../scripts/wait_for_docker_container.sh test_keycloak_1 "Running the server in development mode."
     - ../scripts/wait_for_docker_container.sh test_selenium_1 "Started Selenium Standalone"
+    - ../scripts/wait_for_docker_container.sh test_api_1 "Server started listening"
   script:
     - cd ${CI_PROJECT_DIR}/test
     - npm install
-    - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha integration_tests.js
+    - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha kApp_login_as_kalisio.js
+    - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha keycloak_setUp.js
+    - CLIENT_SECRET=`jq -r .clientSecret cache.json`
+    - echo "CLIENT_SECRET: ${CLIENT_SECRET}"
+    - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha kApp_login_with_new_user.js
+    - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha keycloak_tearDown.js
   after_script:
     - cd ${CI_PROJECT_DIR}/test
     - docker-compose down
