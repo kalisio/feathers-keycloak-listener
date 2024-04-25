@@ -68,12 +68,11 @@ describe('integration_tests', () => {
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
-		// End
-			.then(() => done())
-			.catch((error) => {
-				console.log(error);
-				done(error);
-			});
+		.then(() => done())
+		.catch((error) => {
+			console.log(error);
+			done(error);
+		});
 
 	});
 
