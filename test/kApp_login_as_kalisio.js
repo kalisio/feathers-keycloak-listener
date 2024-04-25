@@ -4,11 +4,14 @@
 //
 //     $ docker-compose up -d
 //     $ npm install
-//     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha kApp_login_as_kalisio.js
+//     $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
+//     $ npx mocha kApp_login_as_kalisio.js
 
 import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
 import { By } from 'selenium-webdriver';
-import 'mocha';
+
+const EMAIL = 'kalisio@kalisio.xyz';
+const PASSWORD_IN_KAPP = 'Pass;word1';
 
 describe('kApp_login_as_kalisio', () => {
 
@@ -31,8 +34,8 @@ describe('kApp_login_as_kalisio', () => {
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Fill in the login form'))
-			.then(() => driver.findElement(By.id('email-field')).sendKeys('kalisio@kalisio.xyz'))
-			.then(() => driver.findElement(By.id('password-field')).sendKeys('Pass;word1'))
+			.then(() => driver.findElement(By.id('email-field')).sendKeys(EMAIL))
+			.then(() => driver.findElement(By.id('password-field')).sendKeys(PASSWORD_IN_KAPP))
 			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
