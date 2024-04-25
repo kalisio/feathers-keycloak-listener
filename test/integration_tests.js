@@ -161,6 +161,27 @@ describe('integration_tests', () => {
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Fill in the user form'))
+			.then(() => driver.findElement(By.id('kc-username')).sendKeys('keycloak-event-gateway'))
+			// .then(() => driver.findElement(By.id('kc-email')).sendKeys(NO_EMAIL))
+			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the user form'))
+			.then(() => driver.findElement(By.css("button.pf-m-primary")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Add a "petitponey-RANDOM" user
+
+		.then(intent('Go to the users page'))
+			.then(() => driver.findElement(By.id('nav-item-users')).click())
+			.then(() => driver.sleep(5000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to create a user'))
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the user form'))
 			.then(() => driver.findElement(By.id('kc-username')).sendKeys('petitponey'))
 			.then(() => driver.findElement(By.id('kc-email')).sendKeys(newEmail))
 			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
