@@ -14,7 +14,7 @@ export const driver = new webdriver.Builder()
 
 export const ready = () => Promise.resolve();
 
-export const intent = (message) => () => new Promise((resolve, project) => {
+export const intent = (message) => () => new Promise((resolve, reject) => {
 	console.log('    intent: %s', message);
 	resolve();
 });

@@ -1,16 +1,13 @@
-// File: feathers-keycloak-listener/test/integration_tests.js
+// File: feathers-keycloak-listener/test/keycloak_setUp.js
 //
 // Run these tests with the following commands:
 //
 //     $ docker-compose up -d
 //     $ npm install
-//     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha integration_tests.js
+//     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha keycloak_setUp.js
 
-import { assert } from 'chai';
-import webdriver from 'selenium-webdriver';
-import { By } from 'selenium-webdriver';
-import fs from 'fs';
 import { driver, ready, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import { By } from 'selenium-webdriver';
 
 const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
 const newEmail = newUsername + '@gmail.com';
@@ -23,44 +20,12 @@ console.log('    email: %s', newEmail);
 console.log('    password in Keycloak: %s', newPasswordInKeycloak);
 console.log('    password in kApp: %s', newPasswordInKApp);
 
-describe('integration_tests', () => {
+describe('keycloak_setUp', () => {
 
-	it('Make kApp and Keycloak interact', (done) => {
+	it('sets up Keycloak for integration tests with the kApp', (done) => {
 
 		ready()
 
-		// kApp: Log in
-/*
-		.then(intent('Open the kApp'))
-			.then(() => driver.navigate().to('http://localhost:8082/'))
-			.then(() => driver.sleep(3000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Dismiss the modal dialog'))
-			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Fill in the login form'))
-			.then(() => driver.findElement(By.id('email-field')).sendKeys('kalisio@kalisio.xyz'))
-			.then(() => driver.findElement(By.id('password-field')).sendKeys('Pass;word1'))
-			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Actually log in'))
-			.then(() => driver.findElement(By.xpath("//div[text() = 'Log in']")).click())
-			.then(() => driver.sleep(3000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		// kApp: Log out
-
-		.then(intent('Open the sidebar'))
-			.then(() => driver.findElement(By.id('left-opener')).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Log out'))
-			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-*/
 		// Keycloak: Log in
 		
 		.then(intent('Keycloak: Login page'))
@@ -249,72 +214,6 @@ describe('integration_tests', () => {
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
-		// Go to the kApp and log in as the new user
-/*
-		.then(intent('Open the kApp'))
-			.then(() => driver.navigate().to('http://localhost:8082/'))
-			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Dismiss the modal dialog'))
-			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Choose "Login with Keycloak"'))
-			.then(() => driver.findElement(By.xpath("//div[text() = 'Login with Keycloak ?']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Fill in the login form'))
-			.then(() => driver.findElement(By.id('username')).sendKeys(newEmail))
-			.then(() => driver.findElement(By.id('password')).sendKeys(newPasswordInKeycloak))
-			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Actually log in'))
-			.then(() => driver.findElement(By.id('kc-login')).click())
-			.then(() => driver.sleep(3000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Dismiss the modal dialog'))
-			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-*/
-		// Keycloak: Go back to the "Kalisio" realm
-		
-		.then(intent('Keycloak: Login page'))
-			.then(() => driver.navigate().to('http://localhost:8080/admin/master/console/'))
-			.then(() => driver.sleep(5000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Deploy the realm list'))
-			.then(() => driver.findElement(By.id('realm-select')).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Select the "Kalisio" realm'))
-			.then(() => driver.findElement(By.xpath("//div[text() = 'Kalisio']")).click())
-			.then(() => driver.sleep(1000)) // Wait so any notification eventually disappears
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		// Keycloak: Destroy the "Kalisio" realm
-
-		.then(intent('Go to the realm settings'))
-			.then(() => driver.findElement(By.id('nav-item-realm-settings')).click())
-			.then(() => driver.sleep(10000)) // Wait so any notification eventually disappears
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Deploy the action menu'))
-			.then(() => driver.findElement(By.xpath("//div[@data-testid = 'action-dropdown']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Ask to delete the realm'))
-			.then(() => driver.findElement(By.xpath("//a[text() = 'Delete']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Confirm the realm deletion'))
-			.then(() => driver.findElement(By.xpath("//button[@id = 'modal-confirm']")).click())
-			.then(() => driver.sleep(3000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
 		// End
 
 		.then(() => done())
@@ -327,7 +226,6 @@ describe('integration_tests', () => {
 	after((done) => {
 
 		driver
-			.sleep(3000)
 			.then(() => driver.quit())
 			.then(() => done())
 			.catch((error) => {
