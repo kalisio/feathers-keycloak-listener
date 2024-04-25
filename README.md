@@ -76,3 +76,21 @@ project documentation for examples of
 JSON sent with some event payloads.
 
 
+## Run the tests
+
+Prerequisites: Node, Selenium
+
+```shell
+$ cd test
+$ docker-compose up -d
+$ npm install
+$ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
+$ npx mocha kApp_login_as_kalisio.js
+$ npx mocha keycloak_setUp.js
+$ npx mocha kApp_login_with_new_user.js
+$ npx mocha keycloak_tearDown.js
+```
+
+
+
+
