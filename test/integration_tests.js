@@ -47,6 +47,8 @@ const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reject) => 
 
 });
 
+const newEmail = 'petitponey' + Math.random().toString(36).slice(2) + '@gmail.com';
+
 describe('integration_tests', () => {
 
 	it('Make kApp and Keycloak interact', (done) => {
@@ -154,10 +156,25 @@ describe('integration_tests', () => {
 			.then(() => driver.sleep(5000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		.then(intent('Ask to create a user'))
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the user form'))
+			.then(() => driver.findElement(By.id('kc-username')).sendKeys('petitponey'))
+			.then(() => driver.findElement(By.id('kc-email')).sendKeys(newEmail))
+			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the user form'))
+			.then(() => driver.findElement(By.css("button.pf-m-primary")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
 		// Keycloak: Destroy the "Kalisio" realm
 
 		.then(intent('Go to the realm settings'))
 			.then(() => driver.findElement(By.id('nav-item-realm-settings')).click())
+			.then(() => driver.sleep(10000)) // Wait so any notification eventually disappears
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Deploy the action menu'))
