@@ -53,6 +53,16 @@ describe('kApp_login_as_kalisio_through_keycloak', () => {
 			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		// kApp: Log out
+
+		.then(intent('Open the sidebar'))
+			.then(() => driver.findElement(By.id('left-opener')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Log out'))
+			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
 		// End
 
 		.then(() => done())
