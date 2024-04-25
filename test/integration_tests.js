@@ -53,7 +53,41 @@ describe('integration_tests', () => {
 
 		ready()
 
-		.then(intent('Login page'))
+		// kApp: Log in
+
+		.then(intent('Open the kApp'))
+			.then(() => driver.navigate().to('http://localhost:8082/'))
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Dismiss the modal dialog'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the login form'))
+			.then(() => driver.findElement(By.id('email-field')).sendKeys('kalisio@kalisio.xyz'))
+			.then(() => driver.findElement(By.id('password-field')).sendKeys('Pass;word1'))
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Actually log in'))
+			.then(() => driver.findElement(By.xpath("//div[text() = 'Log in']")).click())
+			.then(() => driver.sleep(3000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// kApp: Log out
+
+		.then(intent('Open the sidebar'))
+			.then(() => driver.findElement(By.id('left-opener')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Log out'))
+			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Log in
+		
+		.then(intent('Keycloak: Login page'))
 			.then(() => driver.navigate().to('http://localhost:8080/admin/master/console/'))
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
