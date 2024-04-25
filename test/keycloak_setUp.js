@@ -211,6 +211,10 @@ describe('keycloak_setUp', () => {
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'next']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		.then(intent('Add client authentication'))
+			.then(() => driver.findElement(By.xpath("//label[@for = 'kc-authentication-switch']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
 		.then(intent('Go to the next page, again'))
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'next']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
