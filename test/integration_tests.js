@@ -218,6 +218,25 @@ describe('integration_tests', () => {
 			.then(() => driver.findElement(By.css("button.pf-m-primary")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		// Keycloak: Set a password for the "petitponey-RANDOM" user
+		
+
+		// Keycloak: Go back to the "Kalisio" realm
+		
+		.then(intent('Keycloak: Login page'))
+			.then(() => driver.navigate().to('http://localhost:8080/admin/master/console/'))
+			.then(() => driver.sleep(5000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Deploy the realm list'))
+			.then(() => driver.findElement(By.id('realm-select')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Select the "Kalisio" realm'))
+			.then(() => driver.findElement(By.xpath("//div[text() = 'Kalisio']")).click())
+			.then(() => driver.sleep(1000)) // Wait so any notification eventually disappears
+			.then(() => takeScreenshotAndIncreaseCounter())
+
 		// Keycloak: Destroy the "Kalisio" realm
 
 		.then(intent('Go to the realm settings'))
