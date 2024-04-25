@@ -22,7 +22,20 @@ export const context = {
 	
 	putIntoCache: (data) => {
 		console.log('Storing cache into: cache.json...');
+		if (fs.existsSync('cache.json')) {
+			const cached = JSON.parse(fs.readFileSync('cache.json', { encoding: 'utf8' }));
+			for (const [key, value] of Object.entries(data)) {
+				cached[key] = value;
+			}
+			data = cached;
+		}
 		fs.writeFileSync('cache.json', JSON.stringify(data), { encoding: 'utf8' });
+		
+		return {
+			log: () => {
+				console.log('cache content: ', data);
+			},
+		};
 	},
 	
 	loadFromCache: () => {
@@ -67,3 +80,12 @@ export const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reje
 
 });
 
+export const getAttributeValue = (by, attributeName, consume) => new Promise((resolve, reject) => {
+
+	driver.findElement(by).getAttribute(attributeName).then((attributeValue) => {
+
+		consume(attributeValue);
+		
+		resolve();
+	});
+});

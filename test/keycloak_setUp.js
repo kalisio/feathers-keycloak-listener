@@ -6,7 +6,13 @@
 //     $ npm install
 //     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha keycloak_setUp.js
 
-import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import {
+	driver,
+	context,
+	intent,
+	takeScreenshotAndIncreaseCounter,
+	getAttributeValue
+} from './testutil.js';
 import { By } from 'selenium-webdriver';
 
 const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
@@ -14,18 +20,12 @@ const newEmail = newUsername + '@gmail.com';
 const newPasswordInKeycloak = 'tutu';
 const newPasswordInKApp = newUsername + '-Pass;word1';
 
-console.log('New user will be:');
-console.log('    username in Keycloak: %s', newUsername);
-console.log('    email: %s', newEmail);
-console.log('    password in Keycloak: %s', newPasswordInKeycloak);
-console.log('    password in kApp: %s', newPasswordInKApp);
-
 context.putIntoCache({
 	newUsername: newUsername,
 	newEmail: newEmail,
 	newPasswordInKeycloak: newPasswordInKeycloak,
 	newPasswordInKApp: newPasswordInKApp,
-});
+}).log();
 
 describe('keycloak_setUp', () => {
 
@@ -226,6 +226,20 @@ describe('keycloak_setUp', () => {
 
 		.then(intent('Submit the client form'))
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Get the client credentials for "moncoco"
+
+		.then(intent('Go to the Credentials tab'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'Credentials']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Get the client\'s secret'))
+			.then(() => getAttributeValue(By.id('kc-client-secret'), 'value', (clientSecret) => {
+				context.putIntoCache({ clientSecret: clientSecret }).log();
+			}))
+			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		// End

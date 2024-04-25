@@ -11,7 +11,7 @@ import { By } from 'selenium-webdriver';
 
 const cache = context.loadFromCache();
 
-console.log('cache: ', cache);
+console.log('cache content: ', cache);
 
 describe('kApp_login_with_new_user', () => {
 
