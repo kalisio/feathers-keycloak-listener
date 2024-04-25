@@ -4,7 +4,8 @@
 //
 //     $ docker-compose up -d
 //     $ npm install
-//     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha keycloak_tearDown.js
+//     $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
+//     $ npx mocha keycloak_tearDown.js
 
 import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
 import { By } from 'selenium-webdriver';
