@@ -4,7 +4,8 @@
 //
 //     $ docker-compose up -d
 //     $ npm install
-//     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha keycloak_setUp.js
+//     $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
+//     $ npx mocha keycloak_setUp.js
 
 import {
 	driver,
@@ -113,6 +114,7 @@ describe('keycloak_setUp', () => {
 		.then(intent('Fill in the user form'))
 			.then(() => driver.findElement(By.id('kc-username')).sendKeys('keycloak-event-gateway'))
 			// .then(() => driver.findElement(By.id('kc-email')).sendKeys(NO_EMAIL))
+			// Check "Email verified: YES"
 			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
@@ -160,6 +162,7 @@ describe('keycloak_setUp', () => {
 		.then(intent('Fill in the user form'))
 			.then(() => driver.findElement(By.id('kc-username')).sendKeys(newUsername))
 			.then(() => driver.findElement(By.id('kc-email')).sendKeys(newEmail))
+			// Check "Email verified: YES"
 			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
@@ -180,7 +183,55 @@ describe('keycloak_setUp', () => {
 		.then(intent('Fill in the password form'))
 			.then(() => driver.findElement(By.id('password')).sendKeys(newPasswordInKeycloak))
 			.then(() => driver.findElement(By.id('passwordConfirmation')).sendKeys(newPasswordInKeycloak))
+			// Check "Temporary: NO"
+			.then(() => driver.findElement(By.xpath("//div[@class = 'pf-l-bullseye']//span[@class = 'pf-c-switch__toggle']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the password form'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'confirm']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Confirm'))
+			.then(() => driver.findElement(By.id('modal-confirm')).click())
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Add a "kalisio" user
+
+		.then(intent('Go to the users page'))
+			.then(() => driver.findElement(By.id('nav-item-users')).click())
+			.then(() => driver.sleep(5000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to create a user'))
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the user form'))
+			.then(() => driver.findElement(By.id('kc-username')).sendKeys('kalisio'))
+			.then(() => driver.findElement(By.id('kc-email')).sendKeys('kalisio@kalisio.xyz'))
 			// Check "Email verified: YES"
+			.then(() => driver.findElement(By.xpath("//span[@class = 'pf-c-switch__toggle']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the user form'))
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		// Keycloak: Set a password for the "kalisio" user
+
+		.then(intent('Open the Credentials panel'))
+			.then(() => driver.findElement(By.xpath("//a[@data-testid = 'credentials']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to set the password'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'no-credentials-empty-action']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the password form'))
+			.then(() => driver.findElement(By.id('password')).sendKeys('tutu'))
+			.then(() => driver.findElement(By.id('passwordConfirmation')).sendKeys('tutu'))
+			// Check "Temporary: NO"
 			.then(() => driver.findElement(By.xpath("//div[@class = 'pf-l-bullseye']//span[@class = 'pf-c-switch__toggle']")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
