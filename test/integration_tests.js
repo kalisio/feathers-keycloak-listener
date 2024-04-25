@@ -18,7 +18,7 @@ const driver = new webdriver.Builder()
 
 const ready = () => Promise.resolve();
 
-const intent = (message) => new Promise((resolve, project) => {
+const intent = (message) => () => new Promise((resolve, project) => {
 	console.log('    intent: ' + message);
 	resolve();
 });
@@ -53,17 +53,17 @@ describe('integration_tests', () => {
 
 		ready()
 
-		.then(() => intent('Login page'))
+		.then(intent('Login page'))
 			.then(() => driver.navigate().to('http://localhost:8080/admin/master/console/'))
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
-		.then(() => intent('Credentials'))
+		.then(intent('Credentials'))
 			.then(() => driver.findElement(By.id('username')).sendKeys('admin'))
 			.then(() => driver.findElement(By.id('password')).sendKeys('adminp'))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
-		.then(() => intent('Submit the login form'))
+		.then(intent('Submit the login form'))
 			.then(() => driver.findElement(By.id('kc-login')).click())
 			.then(() => driver.sleep(3000))
 			.then(() => takeScreenshotAndIncreaseCounter())
