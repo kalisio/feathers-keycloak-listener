@@ -112,6 +112,7 @@ describe('integration_tests', () => {
 
 		.then(intent('Add a realm'))
 			.then(() => driver.findElement(By.xpath("//a[@data-testid = 'add-realm']")).click())
+			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Fill in the realm form'))
@@ -175,6 +176,25 @@ describe('integration_tests', () => {
 		.then(intent('Go to the Attributes tab'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'Attributes']")).click())
 			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to add a new attribute'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'attributes-add-row']")).click())
+			.then(() => driver.sleep(1000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in attribute values'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.key']")).sendKeys('accessToken'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys('abcdef1234'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'attributes-add-row']")).click())
+			.then(() => driver.sleep(500))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.key']")).sendKeys('keycloakHttpListenerUrl'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys('http://localhost:8082/api/keycloak-events'))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Save the attributes'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save-attributes']")).click())
+			.then(() => driver.sleep(1000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		// Keycloak: Add a "petitponey-RANDOM" user
