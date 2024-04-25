@@ -6,14 +6,18 @@
 //     $ npm install
 //     $ SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub npx mocha kApp_login_as_kalisio.js
 
-import { driver, ready, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
 import { By } from 'selenium-webdriver';
+import 'mocha';
 
 describe('kApp_login_as_kalisio', () => {
 
-	it('logs in the kApp', (done) => {
+	// Do not use an arrow function, so we can use "this"
+	before(function() { context.set(this); });
 
-		ready()
+	it('logs in the kApp', (done) => {
+	
+		context.ready()
 
 		// kApp: Log in
 
