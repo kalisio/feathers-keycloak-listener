@@ -31,6 +31,7 @@ describe('kApp_login_as_kalisio', () => {
 
 		.then(intent('Dismiss the modal dialog'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
+			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Fill in the login form'))
