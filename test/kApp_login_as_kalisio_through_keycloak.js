@@ -10,10 +10,6 @@
 import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
-const cache = context.loadFromCache();
-
-console.log('cache content: ', cache);
-
 const EMAIL = 'kalisio@kalisio.xyz';
 const PASSWORD_IN_KEYCLOAK = 'tutu';
 
