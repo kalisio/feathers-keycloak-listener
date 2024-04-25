@@ -46,10 +46,7 @@ mocha:
       echo "KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}"
 
     # We need KEYCLOAK_CLIENT_SECRET to start the API
-    - |
-      docker-compose up -d \
-          -e KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET} \
-          api
+    - docker-compose up -d api
     - ../scripts/wait_for_docker_container.sh test_api_1 "Server started listening"
 
     # These three tests do not use the user created in the kApp by the Java plugin
