@@ -170,6 +170,13 @@ describe('integration_tests', () => {
 			.then(() => driver.findElement(By.css("button.pf-m-primary")).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
+		// Keycloak: Add custom attributes to the "keycloak-event-gateway" user
+
+		.then(intent('Go to the Attributes tab'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'Attributes']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
 		// Keycloak: Add a "petitponey-RANDOM" user
 
 		.then(intent('Go to the users page'))
