@@ -168,7 +168,7 @@ describe('integration_tests', () => {
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Submit the user form'))
-			.then(() => driver.findElement(By.css("button.pf-m-primary")).click())
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		// Keycloak: Add custom attributes to the "keycloak-event-gateway" user
@@ -215,11 +215,34 @@ describe('integration_tests', () => {
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Submit the user form'))
-			.then(() => driver.findElement(By.css("button.pf-m-primary")).click())
+			.then(() => driver.findElement(By.css('button.pf-m-primary')).click())
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		// Keycloak: Set a password for the "petitponey-RANDOM" user
-		
+
+		.then(intent('Open the Credentials panel'))
+			.then(() => driver.findElement(By.xpath("//a[@data-testid = 'credentials']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Ask to set the password'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'no-credentials-empty-action']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Fill in the password form'))
+			.then(() => driver.findElement(By.id('password')).sendKeys('tutu'))
+			.then(() => driver.findElement(By.id('passwordConfirmation')).sendKeys('tutu'))
+			// Check "Email verified: YES"
+			.then(() => driver.findElement(By.xpath("//div[@class = 'pf-l-bullseye']//span[@class = 'pf-c-switch__toggle']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Submit the password form'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'confirm']")).click())
+			.then(() => takeScreenshotAndIncreaseCounter())
+
+		.then(intent('Confirm'))
+			.then(() => driver.findElement(By.id('modal-confirm')).click())
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
 
 		// Keycloak: Go back to the "Kalisio" realm
 		
