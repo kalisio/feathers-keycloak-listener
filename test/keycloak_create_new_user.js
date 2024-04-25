@@ -15,10 +15,14 @@ import {
 } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
+const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
+
 const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
 const newEmail = newUsername + '@gmail.com';
 const newPasswordInKeycloak = 'tutu';
 const newPasswordInKApp = newUsername + '-Pass;word1';
+
+console.log('Using KAPP_ACCESS_TOKEN from the environment...');
 
 context.putIntoCache({
 	newUsername: newUsername,
@@ -64,35 +68,33 @@ describe('keycloak_create_new_user', () => {
 			.then(() => driver.sleep(1000)) // Wait so any notification eventually disappears
 			.then(() => takeScreenshotAndIncreaseCounter())
 
-		// Keycloak: Add custom attributes to the "keycloak-event-gateway" user
+		// Keycloak: Set up the kApp accessToken as custom attribute to the "keycloak-event-gateway" user
 
-// TODO set up accessToken
+		.then(intent('Go to the users page'))
+			.then(() => driver.findElement(By.id('nav-item-users')).click())
+			.then(() => driver.sleep(5000))
+			.then(() => takeScreenshotAndIncreaseCounter())
 
-/*
+		.then(intent('Go to the keycloak-event-gateway user'))
+			.then(() => driver.findElement(By.xpath("//td[@data-label = 'Username']/a[text() = 'keycloak-event-gateway']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => takeScreenshotAndIncreaseCounter())
+
 		.then(intent('Go to the Attributes tab'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'Attributes']")).click())
 			.then(() => driver.sleep(2000))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
-		.then(intent('Ask to add a new attribute'))
-			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'attributes-add-row']")).click())
-			.then(() => driver.sleep(1000))
-			.then(() => takeScreenshotAndIncreaseCounter())
-
-		.then(intent('Fill in attribute values'))
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.key']")).sendKeys('accessToken'))
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys('abcdef1234'))
-			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'attributes-add-row']")).click())
-			.then(() => driver.sleep(500))
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.key']")).sendKeys('keycloakEventHttpListenerUrl'))
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys('http://172.17.0.1:8082/api/keycloak-events'))
+		.then(intent('Fill in value for attribute: accessToken'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).clear())
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(KAPP_ACCESS_TOKEN))
 			.then(() => takeScreenshotAndIncreaseCounter())
 
 		.then(intent('Save the attributes'))
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save-attributes']")).click())
 			.then(() => driver.sleep(1000))
 			.then(() => takeScreenshotAndIncreaseCounter())
-*/
+
 		// Keycloak: Add a "petitponey-RANDOM" user
 
 		.then(intent('Go to the users page'))
