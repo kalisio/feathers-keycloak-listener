@@ -41,7 +41,8 @@ mocha:
     - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha kApp_login_as_kalisio.js
     - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha keycloak_setUp.js
     - CLIENT_SECRET=`jq -r .clientSecret cache.json`
-    - echo "CLIENT_SECRET: ${CLIENT_SECRET}"
+    - |
+      echo "CLIENT_SECRET: ${CLIENT_SECRET}"
     - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha kApp_login_with_new_user.js
     - SELENIUM_REMOTE_URL=http://172.17.0.1:4444/wd/hub npx mocha keycloak_tearDown.js
   after_script:
