@@ -49,11 +49,26 @@ mocha:
     - docker-compose up -d api
     - ../scripts/wait_for_docker_container.sh test_api_1 "Server started listening"
 
-    # These two tests do not use the user created in the kApp by the Java plugin
+    # These three tests do not use the user created in the kApp by the Java plugin
     - npx mocha kApp_login_as_kalisio.js
     - npx mocha kApp_login_as_kalisio_through_keycloak.js
 
+    - |
+      export KAPP_ACCESS_TOKEN=`curl \
+           --location 'http://localhost:8082/api/authentication' \
+           --header 'Content-Type: application/json' \
+           --data-raw '{
+                 "strategy": "local",
+                 "email": "kalisio@kalisio.xyz",
+                 "password": "Pass;word1"
+             }' \
+         | jq -r .accessToken`
+    - |
+      echo "KAPP_ACCESS_TOKEN: ${KAPP_ACCESS_TOKEN}"
+    - export KAPP_ACCESS_TOKEN
+
     # Create a new user in Keycloak, in the "Kalisio" realm
+    # We also inject the kApp accessToken in this test
     - npx mocha keycloak_create_new_user.js
     
     # These two tests use the user created in the kApp by the Java plugin
