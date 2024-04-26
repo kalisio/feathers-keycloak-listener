@@ -217,13 +217,13 @@ describe('keycloak_setUp', () => {
 
 		.then(intent('Submit the client form'))
 			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save']")).click())
+			.then(() => driver.sleep(3000))
 			.then(() => context.takeScreenshot())
 
 		// Keycloak: Get the client credentials for "moncoco"
 
 		.then(intent('Go to the Credentials tab'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'Credentials']")).click())
-			.then(() => driver.sleep(3000))
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Get the client\'s secret'))
