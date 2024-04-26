@@ -47,9 +47,12 @@ describe('keycloak_create_new_user', () => {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
-			.then((data) => { userCount0 = data.total; });
+			.then((data) => {
+				console.log('kApp users: ', data);
+				userCount0 = data.total;
+			});
 		}))
-		.then(() => driver.sleep(2000)) // Dirty hack because of an error in our control flow
+		.then(() => driver.sleep(4000)) // Dirty hack because of an error in our control flow
 		.then(() => {
 			console.log('Checking that KAPP_ACCESS_TOKEN is valid...');
 			expect(userCount0).to.be.a('number');
