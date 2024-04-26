@@ -11,6 +11,8 @@ import { driver, context, intent, split } from './testutil.js';
 import { By } from 'selenium-webdriver';
 import { expect } from 'chai';
 
+const KAPP_API_URL = process.env.KAPP_API_URL || 'http://localhost:8082';
+
 const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
 
 console.log('Using KAPP_ACCESS_TOKEN from the environment...');
@@ -44,7 +46,7 @@ describe('keycloak_delete_user_previously_created', () => {
 		// kApp: Retrieve the current userCount
 
 		.then(context.execute(() => {
-			fetch('http://localhost:8082/api/users', {
+			fetch(KAPP_API_URL + '/api/users', {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
@@ -193,7 +195,7 @@ describe('keycloak_delete_user_previously_created', () => {
 		// kApp: Test against userCount
 
 		.then(context.execute(() => {
-			fetch('http://localhost:8082/api/users', {
+			fetch(KAPP_API_URL + '/api/users', {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())

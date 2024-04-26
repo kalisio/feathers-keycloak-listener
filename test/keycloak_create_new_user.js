@@ -11,6 +11,8 @@ import { driver, context, intent, split } from './testutil.js';
 import { By } from 'selenium-webdriver';
 import { expect } from 'chai';
 
+const KAPP_API_URL = process.env.KAPP_API_URL || 'http://localhost:8082';
+
 const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
 
 const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
@@ -43,16 +45,16 @@ describe('keycloak_create_new_user', () => {
 		// kApp: Retrieve the current userCount
 
 		.then(context.execute(() => {
-			fetch('http://localhost:8082/api/users', {
+			fetch(KAPP_API_URL + '/api/users', {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log('kApp users: ', data);
+				// console.log('kApp users: ', data);
 				userCount0 = data.total;
 			});
 		}))
-		.then(() => driver.sleep(4000)) // Dirty hack because of an error in our control flow
+		.then(() => driver.sleep(2000)) // Dirty hack because of an error in our control flow
 		.then(() => {
 			console.log('Checking that KAPP_ACCESS_TOKEN is valid...');
 			expect(userCount0).to.be.a('number');
@@ -168,7 +170,7 @@ describe('keycloak_create_new_user', () => {
 		// kApp: Test against userCount
 
 		.then(context.execute(() => {
-			fetch('http://localhost:8082/api/users', {
+			fetch(KAPP_API_URL + '/api/users', {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
