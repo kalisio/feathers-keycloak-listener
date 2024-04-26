@@ -45,8 +45,9 @@ describe('keycloak_delete_user_previously_created', () => {
 			.then((data) => { userCount0 = data.total; });
 		}))
 		.then(() => {
-			console.log('Checking userCount0... (%d)', userCount0);
+			console.log('Checking that KAPP_ACCESS_TOKEN2 is valid...');
 			expect(userCount0).to.be.a('number');
+			console.log('Checking userCount0... (%d)...', userCount0);
 			expect(userCount0).to.equal(userCount0);
 		})
 
