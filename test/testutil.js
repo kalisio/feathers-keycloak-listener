@@ -20,8 +20,10 @@ export const context = {
 
 	set: function(mochaContext) { this.mochaContext = mochaContext; },
 	
-	execute: (action) => () => new Promise((resolve, reject) => {
-		action();		
+	execute: (action) => () => new Promise(async (resolve, reject) => {
+	
+		await action();
+		
 		driver.then(resolve, reject);
 	}),
 	

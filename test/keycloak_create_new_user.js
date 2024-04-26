@@ -46,12 +46,12 @@ describe('keycloak_create_new_user', () => {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
-			.then((data) => {
-				userCount0 = data.total;
-				console.log('Found userCount0: %d', userCount0);
-			});
+			.then((data) => { userCount0 = data.total; });
 		}))
-		.then(() => expect(userCount0).to.equal(userCount0))
+		.then(() => {
+			console.log('Checking userCount0... (%d)', userCount0);
+			expect(userCount0).to.equal(userCount0);
+		})
 
 		// Keycloak: Log in
 		
@@ -163,12 +163,13 @@ describe('keycloak_create_new_user', () => {
 				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
-			.then((data) => {
-				userCount1 = data.total;
-				console.log('Found userCount1: %d', userCount1);
-			});
+			.then((data) => { userCount1 = data.total; });
 		}))
-		.then(() => expect(userCount1).to.equal(userCount0 + 1))
+		.then(() => driver.sleep(2000)) // Dirty hack because of an error in our control flow
+		.then(() => {
+			console.log('Checking userCount1... (%d)', userCount1);
+			expect(userCount1).to.equal(userCount0 + 1);
+		})
 		
 		// End
 
