@@ -28,10 +28,10 @@ export default async function () {
       }
       res.json(response)
     })
-    
+
 // Insert before the "await app.configure(kdkCore)" line:
 // >>>
-  app.use(app.get('apiPath') + '/keycloak-events', new KeycloakListenerService({ 
+  app.use(app.get('apiPath') + '/keycloak-events', new KeycloakListenerService({
     app: app,
     triggers: [{
       eventClass: 'AdminEvent',
@@ -40,10 +40,14 @@ export default async function () {
       action: (event) => {
         if (event.representation.email) {
           console.log('Creating user: ' + event.representation.email + ' (' + event.representation.username + ')')
-          app.getService('users').create({ 
+          // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+          // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+          const keycloakId = event.resourcePath.substr(6);
+          app.getService('users').create({
             email: event.representation.email,
             password: event.representation.username + '-Pass;word1',
-            name: event.representation.username
+            name: event.representation.username,
+            keycloakId: keycloakId,
           })
         } else {
           console.log('Cannot create user with no email: ' + event.representation.username)
@@ -58,10 +62,14 @@ export default async function () {
           usersService.find({ query: { email: event.representation.email } }).then((response) => {
             if (response.total === 0) {
               console.log('Creating user: ' + event.representation.email + ' (' + event.representation.username + ')')
-              app.getService('users').create({ 
+              // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+              // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+              const keycloakId = event.resourcePath.substr(6);
+              app.getService('users').create({
                 email: event.representation.email,
                 password: event.representation.username + '-Pass;word1',
-                name: event.representation.username
+                name: event.representation.username,
+                keycloakId: keycloakId,
               })
             } else {
               console.log('User already exists: ' + event.representation.email)
