@@ -11,17 +11,21 @@ import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
 import { expect } from 'chai';
 
+const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
+
+console.log('Using KAPP_ACCESS_TOKEN from the environment...');
+
 // We must use another KAPP_ACCESS_TOKEN2, because KAPP_ACCESS_TOKEN will be
 // unavailable as soon as we will suppress the "kalisio" account.
 const KAPP_ACCESS_TOKEN2 = process.env.KAPP_ACCESS_TOKEN2;
 
 console.log('Using KAPP_ACCESS_TOKEN2 from the environment...');
 
-// const cache = context.loadFromCache();
-// const USERNAME_TO_DELETE = cache.newUsername;
+const cache = context.loadFromCache();
+const USERNAME_TO_DELETE = cache.newUsername;
 
 // FIXME With our accessToken, we are only able to suppress kalisio@kalisio.xyz!
-const USERNAME_TO_DELETE = 'kalisio';
+// const USERNAME_TO_DELETE = 'kalisio';
 
 var userCount0;
 var userCount1;
@@ -39,17 +43,31 @@ describe('keycloak_delete_user_previously_created', () => {
 
 		.then(context.execute(() => {
 			fetch('http://localhost:8082/api/users', {
-				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN2 }
+				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
 			.then((data) => { userCount0 = data.total; });
 		}))
 		.then(() => {
-			console.log('Checking that KAPP_ACCESS_TOKEN2 is valid...');
+			console.log('Checking that KAPP_ACCESS_TOKEN is valid...');
 			expect(userCount0).to.be.a('number');
 			console.log('Checking userCount0... (%d)...', userCount0);
 			expect(userCount0).to.equal(userCount0);
 		})
+
+		.then(context.execute(() => {
+			fetch('http://localhost:8082/api/users', {
+				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN2 }
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				const userCount = data.total;
+				console.log('Checking that KAPP_ACCESS_TOKEN2 is valid...');
+				expect(userCount0).to.be.a('number');
+				console.log('Checking userCount... (%d)...', userCount);
+				expect(userCount).to.equal(userCount0);
+			});
+		}))
 
 		// Keycloak: Log in
 		
@@ -77,6 +95,37 @@ describe('keycloak_delete_user_previously_created', () => {
 		.then(intent('Select the "Kalisio" realm'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Kalisio']")).click())
 			.then(() => driver.sleep(1000)) // Wait so any notification eventually disappears
+			.then(() => context.takeScreenshot())
+
+		// Keycloak: FIXME: Set up the kApp accessToken(#2!) as custom attribute to the "keycloak-event-gateway" user
+		// This is due to the fact that, as for now, there is no ability to
+		// delete a user other than one’s self, in the database.
+
+		.then(intent('Go to the users page'))
+			.then(() => driver.findElement(By.id('nav-item-users')).click())
+			.then(() => driver.sleep(5000))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Go to the keycloak-event-gateway user'))
+			.then(() => driver.findElement(By.xpath("//td[@data-label = 'Username']/a[text() = 'keycloak-event-gateway']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Go to the Attributes tab'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'Attributes']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Fill in value for attribute: accessToken'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).clear())
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(KAPP_ACCESS_TOKEN2.split('.')[0] + '.'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).clear())
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys(KAPP_ACCESS_TOKEN2.split('.')[1]))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Save the attributes'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save-attributes']")).click())
+			.then(() => driver.sleep(1000))
 			.then(() => context.takeScreenshot())
 
 		// Keycloak: Delete the "petitponey-RANDOM" user that was previously created
@@ -109,11 +158,40 @@ describe('keycloak_delete_user_previously_created', () => {
 			.then(() => driver.sleep(3000))
 			.then(() => context.takeScreenshot())
 
+		// Keycloak: FIXME: Set up back the kApp accessToken(#1!)...
+
+		.then(intent('Go to the users page'))
+			.then(() => driver.findElement(By.id('nav-item-users')).click())
+			.then(() => driver.sleep(5000))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Go to the keycloak-event-gateway user'))
+			.then(() => driver.findElement(By.xpath("//td[@data-label = 'Username']/a[text() = 'keycloak-event-gateway']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Go to the Attributes tab'))
+			.then(() => driver.findElement(By.xpath("//span[text() = 'Attributes']")).click())
+			.then(() => driver.sleep(2000))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Fill in value for attribute: accessToken'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).clear())
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(KAPP_ACCESS_TOKEN.split('.')[0] + '.'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).clear())
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys(KAPP_ACCESS_TOKEN.split('.')[1]))
+			.then(() => context.takeScreenshot())
+
+		.then(intent('Save the attributes'))
+			.then(() => driver.findElement(By.xpath("//button[@data-testid = 'save-attributes']")).click())
+			.then(() => driver.sleep(1000))
+			.then(() => context.takeScreenshot())
+
 		// kApp: Test against userCount
 
 		.then(context.execute(() => {
 			fetch('http://localhost:8082/api/users', {
-				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN2 }
+				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
 			})
 			.then((response) => response.json())
 			.then((data) => { userCount1 = data.total; });
