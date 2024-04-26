@@ -14,12 +14,14 @@ import { expect } from 'chai';
 const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
 
 console.log('Using KAPP_ACCESS_TOKEN from the environment...');
+console.log('KAPP_ACCESS_TOKEN: ', KAPP_ACCESS_TOKEN);
 
 // We must use another KAPP_ACCESS_TOKEN2, because KAPP_ACCESS_TOKEN will be
 // unavailable as soon as we will suppress the "kalisio" account.
 const KAPP_ACCESS_TOKEN2 = process.env.KAPP_ACCESS_TOKEN2;
 
 console.log('Using KAPP_ACCESS_TOKEN2 from the environment...');
+console.log('KAPP_ACCESS_TOKEN2: ', KAPP_ACCESS_TOKEN2);
 
 const cache = context.loadFromCache();
 const USERNAME_TO_DELETE = cache.newUsername;

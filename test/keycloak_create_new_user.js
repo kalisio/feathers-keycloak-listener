@@ -19,6 +19,7 @@ const newPasswordInKeycloak = 'tutu';
 const newPasswordInKApp = newUsername + '-Pass;word1';
 
 console.log('Using KAPP_ACCESS_TOKEN from the environment...');
+console.log('KAPP_ACCESS_TOKEN: ', KAPP_ACCESS_TOKEN);
 
 context.putIntoCache({
 	newUsername: newUsername,
