@@ -60,10 +60,12 @@ describe('keycloak_setUp', () => {
 
 		.then(intent('Go to the realm settings'))
 			.then(() => driver.findElement(By.id('nav-item-realm-settings')).click())
+			.then(() => driver.sleep(3000))
 			.then(() => context.takeScreenshot())
 			
 		.then(intent('Open the Events tab'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'Events']")).click())
+			.then(() => driver.sleep(2000))
 			.then(() => context.takeScreenshot())
 			
 		.then(intent('Open the popup listbox'))
