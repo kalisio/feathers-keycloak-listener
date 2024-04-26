@@ -9,6 +9,7 @@
 
 import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
+import { expect } from 'chai';
 
 const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
 
@@ -26,7 +27,8 @@ context.putIntoCache({
 	newPasswordInKApp: newPasswordInKApp,
 }).log();
 
-var userCount;
+var userCount0;
+var userCount1;
 
 describe('keycloak_create_new_user', () => {
 
@@ -45,11 +47,11 @@ describe('keycloak_create_new_user', () => {
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				userCount = data.total;
-				console.log('Found userCount: %d', userCount);
+				userCount0 = data.total;
+				console.log('Found userCount0: %d', userCount0);
 			});
 		}))
-		.then(() => expect(userCount).to.equal(userCount))
+		.then(() => expect(userCount0).to.equal(userCount0))
 
 		// Keycloak: Log in
 		
@@ -155,6 +157,18 @@ describe('keycloak_create_new_user', () => {
 			.then(() => context.takeScreenshot())
 
 		// kApp: Test against userCount
+
+		.then(context.execute(() => {
+			fetch('http://localhost:8082/api/users', {
+				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				userCount1 = data.total;
+				console.log('Found userCount1: %d', userCount1);
+			});
+		}))
+		.then(() => expect(userCount1).to.equal(userCount0 + 1))
 		
 		// End
 
