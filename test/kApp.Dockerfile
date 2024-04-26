@@ -78,6 +78,8 @@ WORKDIR /home/develop
 
 RUN git clone https://github.com/kalisio/kApp.git
 
+RUN git reset --hard 488532bc3c9792a963ed49c64e8cd87e5185c00a # April 5th, 2024
+
 WORKDIR /home/develop/kApp/api
 
 RUN . "${NVM_DIR}/nvm.sh" && yarn install
