@@ -50,6 +50,7 @@ describe('keycloak_create_new_user', () => {
 		}))
 		.then(() => {
 			console.log('Checking userCount0... (%d)', userCount0);
+			expect(userCount0).to.be.a('number');
 			expect(userCount0).to.equal(userCount0);
 		})
 
@@ -168,6 +169,7 @@ describe('keycloak_create_new_user', () => {
 		.then(() => driver.sleep(2000)) // Dirty hack because of an error in our control flow
 		.then(() => {
 			console.log('Checking userCount1... (%d)', userCount1);
+			expect(userCount1).to.be.a('number');
 			expect(userCount1).to.equal(userCount0 + 1);
 		})
 		
