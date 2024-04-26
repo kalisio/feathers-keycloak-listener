@@ -97,7 +97,7 @@ export default async function () {
             } else {
               const user = response.data[0]
               console.log('Deleting user: %s (%s)', user.email, user.profile.name)
-              app.getService('users').delete({ id: user.id })
+              app.getService('users').remove(user._id)
             }
           })
       }
