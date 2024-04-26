@@ -11,11 +11,17 @@ import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
 import { expect } from 'chai';
 
-const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
+// We must use another KAPP_ACCESS_TOKEN2, because KAPP_ACCESS_TOKEN will be
+// unavailable as soon as we will suppress the "kalisio" account.
+const KAPP_ACCESS_TOKEN2 = process.env.KAPP_ACCESS_TOKEN2;
 
-console.log('Using KAPP_ACCESS_TOKEN from the environment...');
+console.log('Using KAPP_ACCESS_TOKEN2 from the environment...');
 
-const cache = context.loadFromCache();
+// const cache = context.loadFromCache();
+// const USERNAME_TO_DELETE = cache.newUsername;
+
+// FIXME With our accessToken, we are only able to suppress kalisio@kalisio.xyz!
+const USERNAME_TO_DELETE = 'kalisio';
 
 var userCount0;
 var userCount1;
@@ -33,13 +39,14 @@ describe('keycloak_delete_user_previously_created', () => {
 
 		.then(context.execute(() => {
 			fetch('http://localhost:8082/api/users', {
-				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
+				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN2 }
 			})
 			.then((response) => response.json())
 			.then((data) => { userCount0 = data.total; });
 		}))
 		.then(() => {
 			console.log('Checking userCount0... (%d)', userCount0);
+			expect(userCount0).to.be.a('number');
 			expect(userCount0).to.equal(userCount0);
 		})
 
@@ -79,13 +86,13 @@ describe('keycloak_delete_user_previously_created', () => {
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Search for the user previously created'))
-			.then(() => driver.findElement(By.xpath("//input[@aria-label = 'search']")).sendKeys(cache.newUsername))
+			.then(() => driver.findElement(By.xpath("//input[@aria-label = 'search']")).sendKeys(USERNAME_TO_DELETE))
 			.then(() => driver.findElement(By.xpath("//button[@aria-label = 'Search']")).click())
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Select the user'))
 			.then(() => driver.findElement(By.xpath("//a[text() = '"
-				+ cache.newUsername + "']")).click())
+				+ USERNAME_TO_DELETE + "']")).click())
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Deploy the action menu'))
@@ -105,7 +112,7 @@ describe('keycloak_delete_user_previously_created', () => {
 
 		.then(context.execute(() => {
 			fetch('http://localhost:8082/api/users', {
-				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN }
+				headers: { 'Authorization': 'Bearer ' + KAPP_ACCESS_TOKEN2 }
 			})
 			.then((response) => response.json())
 			.then((data) => { userCount1 = data.total; });
@@ -113,6 +120,7 @@ describe('keycloak_delete_user_previously_created', () => {
 		.then(() => driver.sleep(2000)) // Dirty hack because of an error in our control flow
 		.then(() => {
 			console.log('Checking userCount1... (%d)', userCount1);
+			expect(userCount1).to.be.a('number');
 			expect(userCount1).to.equal(userCount0 - 1);
 		})
 		

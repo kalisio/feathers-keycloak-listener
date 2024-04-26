@@ -74,7 +74,6 @@ mocha:
          | jq -r .accessToken`
     - |
       echo "KAPP_ACCESS_TOKEN: ${KAPP_ACCESS_TOKEN}"
-    - export KAPP_ACCESS_TOKEN
 
     # Create a new user in Keycloak, in the "Kalisio" realm
     # We also inject the kApp accessToken in this test
@@ -83,6 +82,26 @@ mocha:
     # These two tests use the user created in the kApp by the Java plugin
     - npx mocha kApp_login_with_new_user_through_keycloak.js
     - npx mocha kApp_login_with_new_user.js
+
+    - NEW_EMAIL=`jq -r .newEmail cache.json`
+    - NEW_PASSWORD_IN_KAPP=`jq -r .newPasswordInKApp cache.json`
+    # This new KAPP_ACCESS_TOKEN2 will be used to check userCount in the kApp,
+    # not to delete the user through the API (KAPP_ACCESS_TOKEN will be used by
+    # the event listener, configured in Keycloak).
+    - |
+      export KAPP_ACCESS_TOKEN2=`curl \
+           --location 'http://localhost:8082/api/authentication' \
+           --header 'Content-Type: application/json' \
+           --data-raw "{
+                 \"strategy\": \"local\",
+                 \"email\": \"${NEW_EMAIL}\",
+                 \"password\": \"${NEW_PASSWORD_IN_KAPP}\"
+             }" \
+         | jq -r .accessToken`
+    - |
+      echo "KAPP_ACCESS_TOKEN2: ${KAPP_ACCESS_TOKEN2}"
+
+    - npx mocha keycloak_delete_user_previously_created.js
 
     # Remove the "Kalisio" realm in Keycloak
     - npx mocha keycloak_tearDown.js
