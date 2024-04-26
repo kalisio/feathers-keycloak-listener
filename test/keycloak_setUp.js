@@ -221,7 +221,7 @@ describe('keycloak_setUp', () => {
 
 		.then(intent('Go to the Credentials tab'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'Credentials']")).click())
-			.then(() => driver.sleep(2000))
+			.then(() => driver.sleep(3000))
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Get the client\'s secret'))
