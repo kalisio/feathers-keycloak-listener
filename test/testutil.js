@@ -13,12 +13,17 @@ export const driver = new webdriver.Builder()
 	.build();
 
 export const context = {
+	
+	mochaContext: null,
 
 	ready: () => Promise.resolve(),
 
 	set: function(mochaContext) { this.mochaContext = mochaContext; },
 	
-	mochaContext: null,
+	execute: (action) => () => new Promise((resolve, reject) => {
+		action();		
+		driver.then(resolve, reject);
+	}),
 	
 	putIntoCache: (data) => {
 		console.log('Storing cache into: cache.json...');
@@ -43,6 +48,33 @@ export const context = {
 		const json = fs.readFileSync('cache.json', { encoding: 'utf8' });
 		return JSON.parse(json);
 	},
+	
+	takeScreenshot: () => new Promise((resolve, reject) => {
+
+		driver.takeScreenshot().then((data) => {
+	
+			++screenshotCount;
+			const fileName = screenshotCount.toString().padStart(8, '0') + '.png';
+			console.log('      -> screenshot: %s', fileName);
+			if (!fs.existsSync('screenshots')) {
+				fs.mkdirSync('screenshots');
+			}
+			const screenshotsDir = (context.mochaContext === null)
+				? 'screenshots'
+				: ('screenshots/' + context.mochaContext.test.parent.title);
+			if (!fs.existsSync(screenshotsDir)) {
+				fs.mkdirSync(screenshotsDir);
+			}
+			fs.writeFileSync(screenshotsDir + '/' + fileName, data, 'base64', (error) => {
+				if (error) {
+					console.log(error);
+					assert.fail('While taking screenshot: ' + fileName);
+					reject();
+				}
+			});
+
+		}).then(resolve, reject);
+	}),
 };
 
 export const intent = (message) => () => new Promise((resolve, reject) => {
@@ -51,34 +83,6 @@ export const intent = (message) => () => new Promise((resolve, reject) => {
 });
 
 var screenshotCount = 0;
-
-export const takeScreenshotAndIncreaseCounter = () => new Promise((resolve, reject) => {
-
-	driver.takeScreenshot().then((data) => {
-	
-		++screenshotCount;
-		const fileName = screenshotCount.toString().padStart(8, '0') + '.png';
-		console.log('      -> screenshot: %s', fileName);
-		if (!fs.existsSync('screenshots')) {
-			fs.mkdirSync('screenshots');
-		}
-		const screenshotsDir = (context.mochaContext === null)
-			? 'screenshots'
-			: ('screenshots/' + context.mochaContext.test.parent.title);
-		if (!fs.existsSync(screenshotsDir)) {
-			fs.mkdirSync(screenshotsDir);
-		}
-		fs.writeFileSync(screenshotsDir + '/' + fileName, data, 'base64', (error) => {
-			if (error) {
-				console.log(error);
-				assert.fail('While taking screenshot: ' + fileName);
-				reject();
-			}
-		});
-
-	}).then(resolve, reject);
-
-});
 
 export const getAttributeValue = (by, attributeName, consume) => new Promise((resolve, reject) => {
 

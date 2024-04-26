@@ -7,8 +7,9 @@
 //     $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
 //     $ npx mocha kApp_login_as_kalisio.js
 
-import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
+import { expect } from 'chai';
 
 const EMAIL = 'kalisio@kalisio.xyz';
 const PASSWORD_IN_KAPP = 'Pass;word1';
@@ -27,33 +28,33 @@ describe('kApp_login_as_kalisio', () => {
 		.then(intent('Open the kApp'))
 			.then(() => driver.navigate().to('http://localhost:8082/'))
 			.then(() => driver.sleep(3000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Dismiss the modal dialog'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
 			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Fill in the login form'))
 			.then(() => driver.findElement(By.id('email-field')).sendKeys(EMAIL))
 			.then(() => driver.findElement(By.id('password-field')).sendKeys(PASSWORD_IN_KAPP))
 			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Actually log in'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Log in']")).click())
 			.then(() => driver.sleep(3000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		// kApp: Log out
 
 		.then(intent('Open the sidebar'))
 			.then(() => driver.findElement(By.id('left-opener')).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Log out'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		// End
 

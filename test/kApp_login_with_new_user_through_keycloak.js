@@ -7,7 +7,7 @@
 //     $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub 
 //     $ npx mocha kApp_login_with_new_user_through_keycloak.js
 
-import { driver, context, intent, takeScreenshotAndIncreaseCounter } from './testutil.js';
+import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
 const cache = context.loadFromCache();
@@ -31,42 +31,42 @@ describe('kApp_login_with_new_user_through_keycloak', () => {
 		.then(intent('Open the kApp'))
 			.then(() => driver.navigate().to('http://localhost:8082/'))
 			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Dismiss the modal dialog'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
 			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Choose "Login with Keycloak"'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Login with Keycloak ?']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Fill in the login form'))
 			.then(() => driver.findElement(By.id('username')).sendKeys(EMAIL))
 			.then(() => driver.findElement(By.id('password')).sendKeys(PASSWORD_IN_KEYCLOAK))
 			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Actually log in'))
 			.then(() => driver.findElement(By.id('kc-login')).click())
 			.then(() => driver.sleep(10000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Dismiss the modal dialog'))
 			.then(() => driver.findElement(By.xpath("//span[text() = 'OK']")).click())
 			.then(() => driver.sleep(2000))
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		// kApp: Log out
 
 		.then(intent('Open the sidebar'))
 			.then(() => driver.findElement(By.id('left-opener')).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		.then(intent('Log out'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
-			.then(() => takeScreenshotAndIncreaseCounter())
+			.then(() => context.takeScreenshot())
 
 		// End
 
