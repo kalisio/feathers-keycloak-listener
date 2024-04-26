@@ -99,11 +99,11 @@ describe('keycloak_delete_user_previously_created', () => {
 			.then(() => driver.findElement(By.xpath("//div[@data-testid = 'action-dropdown']")).click())
 			.then(() => context.takeScreenshot())
 
-		.then(intent('Ask to delete the realm'))
+		.then(intent('Ask to delete the user'))
 			.then(() => driver.findElement(By.xpath("//a[text() = 'Delete']")).click())
 			.then(() => context.takeScreenshot())
 
-		.then(intent('Confirm the realm deletion'))
+		.then(intent('Confirm the user deletion'))
 			.then(() => driver.findElement(By.xpath("//button[@id = 'modal-confirm']")).click())
 			.then(() => driver.sleep(3000))
 			.then(() => context.takeScreenshot())
