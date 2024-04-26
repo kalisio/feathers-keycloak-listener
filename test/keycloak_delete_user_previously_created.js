@@ -7,7 +7,7 @@
 //     $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
 //     $ npx mocha keycloak_setUp.js
 
-import { driver, context, intent } from './testutil.js';
+import { driver, context, intent, split } from './testutil.js';
 import { By } from 'selenium-webdriver';
 import { expect } from 'chai';
 
@@ -119,9 +119,9 @@ describe('keycloak_delete_user_previously_created', () => {
 
 		.then(intent('Fill in value for attribute: accessToken'))
 			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).clear())
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(KAPP_ACCESS_TOKEN2.split('.')[0] + '.'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(split(KAPP_ACCESS_TOKEN2)[0]))
 			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).clear())
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys(KAPP_ACCESS_TOKEN2.split('.')[1]))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys(split(KAPP_ACCESS_TOKEN2)[1]))
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Save the attributes'))
@@ -178,9 +178,9 @@ describe('keycloak_delete_user_previously_created', () => {
 
 		.then(intent('Fill in value for attribute: accessToken'))
 			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).clear())
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(KAPP_ACCESS_TOKEN.split('.')[0] + '.'))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.0.value']")).sendKeys(split(KAPP_ACCESS_TOKEN)[0]))
 			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).clear())
-			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys(KAPP_ACCESS_TOKEN.split('.')[1]))
+			.then(() => driver.findElement(By.xpath("//input[@name = 'attributes.1.value']")).sendKeys(split(KAPP_ACCESS_TOKEN)[1]))
 			.then(() => context.takeScreenshot())
 
 		.then(intent('Save the attributes'))

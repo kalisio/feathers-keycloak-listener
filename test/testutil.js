@@ -95,3 +95,17 @@ export const getAttributeValue = (by, attributeName, consume) => new Promise((re
 		resolve();
 	});
 });
+
+export const split = (accessToken) => {
+
+	const index = accessToken.indexOf('.');
+	
+	if (index === -1) {
+	
+		return [accessToken, ''];
+		
+	} else {
+	
+		return [accessToken.substring(0, index +1), accessToken.substring(index + 1)]
+	}
+};
