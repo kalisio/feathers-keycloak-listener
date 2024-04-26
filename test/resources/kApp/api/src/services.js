@@ -39,10 +39,10 @@ export default async function () {
       resourceType: 'USER',
       action: (event) => {
         if (event.representation.email) {
-          console.log('Creating user: ' + event.representation.email + ' (' + event.representation.username + ')')
           // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
           // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-          const keycloakId = event.resourcePath.substr(6);
+          const keycloakId = event.resourcePath.substr(6)
+          console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
           app.getService('users').create({
             email: event.representation.email,
             password: event.representation.username + '-Pass;word1',
@@ -50,7 +50,7 @@ export default async function () {
             keycloakId: keycloakId,
           })
         } else {
-          console.log('Cannot create user with no email: ' + event.representation.username)
+          console.log('Cannot create user with no email: %s', event.representation.username)
         }
       }
     }, {
@@ -59,12 +59,12 @@ export default async function () {
       resourceType: 'USER',
       action: (event) => {
         if (event.representation.email) {
+          // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+          // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+          const keycloakId = event.resourcePath.substr(6)
           usersService.find({ query: { email: event.representation.email } }).then((response) => {
             if (response.total === 0) {
-              console.log('Creating user: ' + event.representation.email + ' (' + event.representation.username + ')')
-              // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-              // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-              const keycloakId = event.resourcePath.substr(6);
+              console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
               app.getService('users').create({
                 email: event.representation.email,
                 password: event.representation.username + '-Pass;word1',
@@ -72,10 +72,34 @@ export default async function () {
                 keycloakId: keycloakId,
               })
             } else {
-              console.log('User already exists: ' + event.representation.email)
+              console.log('User already exists: %s', event.representation.email)
+              console.log('Updating user.keycloadId...')
+              const user = response.data[0]
+              user.keycloakId = keycloakId
+              // FIXME
+              console.error('NOT IMPLEMENTED: Patch for user.keycloadId')
+              // app.getService('users').patch(user) // NOPE. This updates the password!
             }
           })
         }
+      }
+    }, {
+      eventClass: 'AdminEvent',
+      operationType: 'DELETE',
+      resourceType: 'USER',
+      action: (event) => {
+          // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+          // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+          const keycloakId = event.resourcePath.substr(6)
+          usersService.find({ query: { keycloakId: keycloakId } }).then((response) => {
+            if (response.total === 0) {
+              console.log('No user exists with keycloakId: %s', keycloakId)
+            } else {
+              const user = response.data[0]
+              console.log('Deleting user: %s (%s)', user.email, user.profile.name)
+              app.getService('users').delete({ id: user.id })
+            }
+          })
       }
     }]
   }))
