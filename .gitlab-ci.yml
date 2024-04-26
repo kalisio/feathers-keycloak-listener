@@ -64,7 +64,7 @@ mocha:
 
     - |
       export KAPP_ACCESS_TOKEN=`curl \
-           --location 'http://localhost:8082/api/authentication' \
+           --location 'http://172.17.0.1:8082/api/authentication' \
            --header 'Content-Type: application/json' \
            --data-raw '{
                  "strategy": "local",
@@ -90,7 +90,7 @@ mocha:
     # the event listener, configured in Keycloak).
     - |
       export KAPP_ACCESS_TOKEN2=`curl \
-           --location 'http://localhost:8082/api/authentication' \
+           --location 'http://172.17.0.1:8082/api/authentication' \
            --header 'Content-Type: application/json' \
            --data-raw "{
                  \"strategy\": \"local\",
