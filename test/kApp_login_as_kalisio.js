@@ -9,7 +9,6 @@
 
 import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
-import { expect } from 'chai';
 
 const EMAIL = 'kalisio@kalisio.xyz';
 const PASSWORD_IN_KAPP = 'Pass;word1';
