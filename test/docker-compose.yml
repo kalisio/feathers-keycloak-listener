@@ -62,7 +62,7 @@ services:
       depends_on:
         - mongo
       environment:
-        DB_URL: mongodb://172.17.0.1:27017/kapp
+        DB_URL: mongodb://localhost:27017/kapp
         PORT: 8081
         CLIENT_PORT: 8082
         KEYCLOAK_URL: http://localhost:8080/
