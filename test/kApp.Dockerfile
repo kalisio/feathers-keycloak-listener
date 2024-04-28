@@ -1,4 +1,8 @@
 # File: feathers-keycloak-listener/test/kApp.Dockerfile
+#
+# Used to create the "tmp/kapp" image used during the tests.
+#
+# Build context: feathers-keycloak-listener/.
 
 FROM debian:10.8
 
@@ -66,7 +70,8 @@ RUN . "${NVM_DIR}/nvm.sh" && yarn link
 
 WORKDIR /home/develop
 
-RUN git clone https://gitlab.com/avcompris/kalisio/feathers-keycloak-listener.git
+COPY --chown=develop lib feathers-keycloak-listener/lib/
+COPY --chown=develop package.json feathers-keycloak-listener/
 
 WORKDIR /home/develop/feathers-keycloak-listener
 
@@ -97,8 +102,8 @@ RUN . "${NVM_DIR}/nvm.sh" && yarn link @kalisio/kdk
 USER root
 WORKDIR /home/develop
 
-COPY scripts/start_api.sh .
-COPY scripts/start_frontend.sh .
+COPY test/scripts/start_api.sh .
+COPY test/scripts/start_frontend.sh .
 
 RUN chmod +x start_api.sh
 RUN chmod +x start_frontend.sh
