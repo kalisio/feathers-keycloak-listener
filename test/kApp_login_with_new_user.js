@@ -59,6 +59,24 @@ describe('kApp_login_with_new_user', () => {
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
 			.then(() => context.takeScreenshot())
 
+		// kApp: Retrieve an access token for the second user, that will be used in further tests
+
+		.then(context.execute(() => {
+			fetch(KAPP_API_URL + '/api/authentication', {
+				headers: { 'Content-Type': 'application/json' },
+				method: 'POST',
+				body: JSON.stringify({
+					strategy: 'local',
+					email: EMAIL,
+					password: PASSWORD_IN_KAPP,
+				})
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				context.putIntoCache({ kAppAccessToken2: data.accessToken }).log();
+			});
+		}))
+
 		// End
 
 		.then(() => done())

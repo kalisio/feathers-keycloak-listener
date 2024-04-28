@@ -13,15 +13,12 @@ import { expect } from 'chai';
 
 const KAPP_API_URL = process.env.KAPP_API_URL || 'http://localhost:8082';
 
-const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
+const KAPP_ACCESS_TOKEN = context.getFromEnvOrFromCache('KAPP_ACCESS_TOKEN', 'kAppAccessToken');
 
 const newUsername = 'petitponey' + Math.random().toString(36).slice(2);
 const newEmail = newUsername + '@gmail.com';
 const newPasswordInKeycloak = 'tutu';
 const newPasswordInKApp = newUsername + '-Pass;word1';
-
-console.log('Using KAPP_ACCESS_TOKEN from the environment...');
-console.log('KAPP_ACCESS_TOKEN: ', KAPP_ACCESS_TOKEN);
 
 context.putIntoCache({
 	newUsername: newUsername,

@@ -71,7 +71,7 @@ describe('kApp_login_as_kalisio', () => {
 			})
 			.then((response) => response.json())
 			.then((data) => {
-				context.putIntoCache({ kappAccessToken: data.accessToken }).log();
+				context.putIntoCache({ kAppAccessToken: data.accessToken }).log();
 			});
 		}))
 

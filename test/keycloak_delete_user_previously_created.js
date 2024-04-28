@@ -10,20 +10,16 @@
 import { driver, context, intent, split } from './testutil.js';
 import { By } from 'selenium-webdriver';
 import { expect } from 'chai';
+import fs from 'fs';
 
 const KAPP_API_URL = process.env.KAPP_API_URL || 'http://localhost:8082';
 
-const KAPP_ACCESS_TOKEN = process.env.KAPP_ACCESS_TOKEN;
-
-console.log('Using KAPP_ACCESS_TOKEN from the environment...');
-console.log('KAPP_ACCESS_TOKEN: ', KAPP_ACCESS_TOKEN);
+const KAPP_ACCESS_TOKEN = context.getFromEnvOrFromCache('KAPP_ACCESS_TOKEN', 'kAppAccessToken');
 
 // We must use another KAPP_ACCESS_TOKEN2, because KAPP_ACCESS_TOKEN will be
 // unavailable as soon as we will suppress the "kalisio" account.
-const KAPP_ACCESS_TOKEN2 = process.env.KAPP_ACCESS_TOKEN2;
 
-console.log('Using KAPP_ACCESS_TOKEN2 from the environment...');
-console.log('KAPP_ACCESS_TOKEN2: ', KAPP_ACCESS_TOKEN2);
+const KAPP_ACCESS_TOKEN2 = context.getFromEnvOrFromCache('KAPP_ACCESS_TOKEN2', 'kAppAccessToken2');
 
 const cache = context.loadFromCache();
 const USERNAME_TO_DELETE = cache.newUsername;

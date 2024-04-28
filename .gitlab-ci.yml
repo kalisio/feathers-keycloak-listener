@@ -64,18 +64,19 @@ mocha:
     - npx mocha kApp_login_as_kalisio.js
     - npx mocha kApp_login_as_kalisio_through_keycloak.js
 
-    - |
-      export KAPP_ACCESS_TOKEN=`curl \
-           --location 'http://172.17.0.1:8082/api/authentication' \
-           --header 'Content-Type: application/json' \
-           --data-raw '{
-                 "strategy": "local",
-                 "email": "kalisio@kalisio.xyz",
-                 "password": "Pass;word1"
-             }' \
-         | jq -r .accessToken`
-    - |
-      echo "KAPP_ACCESS_TOKEN: ${KAPP_ACCESS_TOKEN}"
+    # Now kAppAccessToken is stored into cache.json by the tests.
+#    - |
+#      export KAPP_ACCESS_TOKEN=`curl \
+#           --location 'http://172.17.0.1:8082/api/authentication' \
+#           --header 'Content-Type: application/json' \
+#           --data-raw '{
+#                 "strategy": "local",
+#                 "email": "kalisio@kalisio.xyz",
+#                 "password": "Pass;word1"
+#             }' \
+#         | jq -r .accessToken`
+#    - |
+#      echo "KAPP_ACCESS_TOKEN: ${KAPP_ACCESS_TOKEN}"
 
     # Create a new user in Keycloak, in the "Kalisio" realm
     # We also inject the kApp accessToken in this test
@@ -90,18 +91,19 @@ mocha:
     # This new KAPP_ACCESS_TOKEN2 will be used to check userCount in the kApp,
     # not to delete the user through the API (KAPP_ACCESS_TOKEN will be used by
     # the event listener, configured in Keycloak).
-    - |
-      export KAPP_ACCESS_TOKEN2=`curl \
-           --location 'http://172.17.0.1:8082/api/authentication' \
-           --header 'Content-Type: application/json' \
-           --data-raw "{
-                 \"strategy\": \"local\",
-                 \"email\": \"${NEW_EMAIL}\",
-                 \"password\": \"${NEW_PASSWORD_IN_KAPP}\"
-             }" \
-         | jq -r .accessToken`
-    - |
-      echo "KAPP_ACCESS_TOKEN2: ${KAPP_ACCESS_TOKEN2}"
+    # Now read from cache.json when tests are run sequentially.
+#    - |
+#      export KAPP_ACCESS_TOKEN2=`curl \
+#           --location 'http://172.17.0.1:8082/api/authentication' \
+#           --header 'Content-Type: application/json' \
+#           --data-raw "{
+#                 \"strategy\": \"local\",
+#                 \"email\": \"${NEW_EMAIL}\",
+#                 \"password\": \"${NEW_PASSWORD_IN_KAPP}\"
+#             }" \
+#         | jq -r .accessToken`
+#    - |
+#      echo "KAPP_ACCESS_TOKEN2: ${KAPP_ACCESS_TOKEN2}"
 
     - npx mocha keycloak_delete_user_previously_created.js
 

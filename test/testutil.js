@@ -77,6 +77,22 @@ export const context = {
 
 		}).then(resolve, reject);
 	}),
+
+	getFromEnvOrFromCache: (envVarName, cacheVarName) => {
+
+		if (!process.env[envVarName] && !fs.existsSync('cache.json')) {
+			console.error('*** ERROR. No cache.json file was found.');
+			console.error('In that case, please set a %s environment variable to run this test.', envVarName);
+			process.exit(1);
+		}
+
+		const value = process.env[envVarName] || context.loadFromCache()[cacheVarName];
+
+		console.log('Using %s from the environment or from cache.json...', envVarName);
+		console.log('%s: %s', envVarName, value);
+
+		value
+	},
 };
 
 export const intent = (message) => () => new Promise((resolve, reject) => {
