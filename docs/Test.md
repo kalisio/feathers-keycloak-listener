@@ -207,6 +207,24 @@ and deletes the “Kalisio” realm.
 
 
 
+## Troubleshooting
+
+If you are making modifications to the code
+and redeploy via `docker-compose`
+and don’t see your modifications,
+the temporary Docker image `tmp/kapp`
+may have to be updated.
+
+In that case, use:
+
+````
+$ docker-compose down
+$ docker rmi -f tmp/kapp
+$ docker-compose up -d
+````
+
+It can take some time.
+
 
 ## Test results: screenshots
 
