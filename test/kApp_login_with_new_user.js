@@ -10,6 +10,8 @@
 import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
+const KAPP_API_URL = process.env.KAPP_API_URL || 'http://localhost:8082';
+
 const cache = context.loadFromCache();
 
 console.log('cache content: ', cache);
