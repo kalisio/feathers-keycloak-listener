@@ -1,95 +1,46 @@
+_Next Page: [1. Installation and usage](docs/Usage.md)_
+
+
+--
+
 # feathers-keycloak-listener
 
-## Usage
-
-### Installation
-
-````
-$ yarn install
-$ yarn link
-````
-
-### Link from your app
+> A Feathers module that listens to the Keycloak
+> events sent in JSON by the 
+> [keycloak-event-gateway](https://github.com/kalisio/keycloak-event-gateway) plugin.
 
 
-From your app folder:
+## Presentation
 
-````
-$ yarn install
-$ yarn link @kalisio/feathers-keycloak-listener
-````
-
-
-### Setup the service
-
-Assuming you have setup a Feathers app:
-
-````
-// Import Feathers stufff
-import KeycloakListenerService from '@kalisio/feathers-keycloak-listener/lib/service.js'
-
-// Setup Feathers app
-
-app.use('/api/keycloak-events', new KeycloakListenerService({
-	app: app
-}))
-````
-
-This will actually do nothing apart from some
-logging in the console.
-
-To add some business logic, you will have to do this:
-
-````
-app.use('/api/keycloak-events', new KeycloakListenerService({
-	app: app,
-	triggers: [{
-       eventClass: 'AdminEvent',
-       operationType: 'CREATE',
-       resourceType: 'USER',
-       action: (event) => {
-           console.log('Do something with: ' + event.representation.username)
-       }
-   }]
-}))
-````
+This module provides a Feathers service with
+predefined business methods holding no implementation,
+to which you can attach hooks that
+will contain your
+application’s business logic.
 
 
-## API
 
-`feathers-keycloak-listener` consists in a single service that provides the following methods:
+## This documentation
 
-### constructor (options)
+1. [Installation and usage](docs/Usage.md)
+2. [API](docs/API.md)
+3. [About Business Logic](docs/Business_Logic.md)
+4. [Configuration](docs/Configuration.md)
+5. [How to deploy locally](docs/Deploy.md)
+6. [How to test](docs/Test.md)
+7. [Troubleshooting](docs/Troubleshooting.md)
+8. [Known Issues](docs/Known_Issues.md)
+9. [FAQ](docs/FAQ.md)
 
-Create an instance of the service with the given options:
+--
 
-| Parameter | Description | Required |
-| :--- | :--- | :--- |
-| `app` | the feathers app | yes |
-
-### create (data, params)
-
-Notifies the listener of a Keycloak event.
-
-See the **keycloak-custom-emitter**
-project documentation for examples of
-JSON sent with some event payloads.
+_Next Page: [1. Installation and usage](docs/Usage.md)_
 
 
-## Run the tests
 
-Prerequisites: Node, Selenium
 
-```shell
-$ cd test
-$ docker-compose up -d
-$ npm install
-$ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
-$ npx mocha kApp_login_as_kalisio.js
-$ npx mocha keycloak_setUp.js
-$ npx mocha kApp_login_with_new_user.js
-$ npx mocha keycloak_tearDown.js
-```
+
+
 
 
 
