@@ -36,6 +36,34 @@ Then run:
 $ npm install
 $ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
 $ npx mocha kApp_login_as_kalisio.js
+$ npx mocha keycloak_setUp.js
+$ npx mocha kApp_login_as_kalisio_through_keycloak.js
+$ npx mocha keycloak_create_new_user.js
+$ npx mocha kApp_login_with_new_user_through_keycloak.js
+$ npx mocha kApp_login_with_new_user.js
+$ npx mocha keycloak_delete_user_previously_created.js
+$ npx mocha keycloak_tearDown.js
+```
+
+The tests should be run in that order.
+
+You can skip some tests, but then 
+depending on the current step, you may have to
+provide `KAPP_ACCESS_TOKEN`
+and/or `KAPP_ACCESS_TOKEN2` in the environment.
+See below.
+
+
+## More details about the tests
+
+We present each test suite.
+
+First, run:
+
+```shell
+$ npm install
+$ export SELENIUM_REMOTE_URL=http://localhost:4444/wd/hub
+$ npx mocha kApp_login_as_kalisio.js
 ```
 
 This first test, `kApp_login_as_kalisio.js`,
@@ -58,7 +86,13 @@ in a local `cache.json` file.
      }'
 > ````
 
-This second test, `keycloak_setUp.js`, 
+Now, run:
+
+```shell
+$ npx mocha keycloak_setUp.js
+```
+
+This second test
 logs in the Keycloak GUI, and
 configures
 Keycloak so you will be able to
