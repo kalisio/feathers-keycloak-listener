@@ -10,6 +10,8 @@
 import { driver, context, intent } from './testutil.js';
 import { By } from 'selenium-webdriver';
 
+const KAPP_API_URL = process.env.KAPP_API_URL || 'http://localhost:8082';
+
 const EMAIL = 'kalisio@kalisio.xyz';
 const PASSWORD_IN_KAPP = 'Pass;word1';
 
@@ -21,7 +23,7 @@ describe('kApp_login_as_kalisio', () => {
 	it('logs in the kApp', (done) => {
 	
 		context.ready()
-
+		
 		// kApp: Log in
 
 		.then(intent('Open the kApp'))
@@ -54,6 +56,24 @@ describe('kApp_login_as_kalisio', () => {
 		.then(intent('Log out'))
 			.then(() => driver.findElement(By.xpath("//div[text() = 'Logout']")).click())
 			.then(() => context.takeScreenshot())
+
+		// kApp: Retrieve an access token that will be used in further tests
+
+		.then(context.execute(() => {
+			fetch(KAPP_API_URL + '/api/authentication', {
+				headers: { 'Content-Type': 'application/json' },
+				method: 'POST',
+				body: JSON.stringify({
+					strategy: 'local',
+					email: 'kalisio@kalisio.xyz',
+					password: 'Pass;word1'
+				})
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				context.putIntoCache({ kappAccessToken: data.accessToken }).log();
+			});
+		}))
 
 		// End
 
