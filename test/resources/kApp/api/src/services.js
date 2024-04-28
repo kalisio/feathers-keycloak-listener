@@ -33,61 +33,66 @@ export default async function () {
 // >>>
   app.use(app.get('apiPath') + '/keycloak-events', new KeycloakListenerService({
     app: app,
-    triggers: [{
-      eventClass: 'AdminEvent',
-      operationType: 'CREATE',
-      resourceType: 'USER',
-      action: (event) => {
-        if (event.representation.email) {
-          // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-          // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-          const keycloakId = event.resourcePath.substr(6)
-          console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
-          app.getService('users').create({
-            email: event.representation.email,
-            password: event.representation.username + '-Pass;word1',
-            name: event.representation.username,
-            keycloakId: keycloakId,
-          })
-        } else {
-          console.log('Cannot create user with no email: %s', event.representation.username)
-        }
-      }
-    }, {
-      eventClass: 'AdminEvent',
-      operationType: 'UPDATE',
-      resourceType: 'USER',
-      action: (event) => {
-        if (event.representation.email) {
-          // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-          // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
-          const keycloakId = event.resourcePath.substr(6)
-          usersService.find({ query: { email: event.representation.email } }).then((response) => {
-            if (response.total === 0) {
-              console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
-              app.getService('users').create({
-                email: event.representation.email,
-                password: event.representation.username + '-Pass;word1',
-                name: event.representation.username,
-                keycloakId: keycloakId,
-              })
-            } else {
-              console.log('User already exists: %s', event.representation.email)
-              console.log('Updating user.keycloadId...')
-              const user = response.data[0]
-              user.keycloakId = keycloakId
-              // FIXME
-              console.error('NOT IMPLEMENTED: Patch for user.keycloadId')
-              // app.getService('users').patch(user) // NOPE. This updates the password!
-            }
-          })
-        }
-      }
-    }, {
-      eventClass: 'AdminEvent',
-      operationType: 'DELETE',
-      resourceType: 'USER',
-      action: (event) => {
+  }), {
+    methods: ['create', 'createUser', 'updateUser', 'deleteUser']
+  });
+
+  app.getService('keycloak-events').hooks({
+    before: {
+      create: [
+        async (context) => {
+          // catch all
+        },
+      ],
+      createUser: [
+        async (context) => {
+          const event = context.arguments[0];
+          if (event.representation.email) {
+            // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+            // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+            const keycloakId = event.resourcePath.substr(6)
+            console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
+            app.getService('users').create({
+              email: event.representation.email,
+              password: event.representation.username + '-Pass;word1',
+              name: event.representation.username,
+              keycloakId: keycloakId,
+            })
+          } else {
+            console.log('Cannot create user with no email: %s', event.representation.username)
+          }
+        },
+      ],
+      updateUser: [
+        async (context) => {
+          const event = context.arguments[0];
+          if (event.representation.email) {
+            // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+            // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
+            const keycloakId = event.resourcePath.substr(6)
+            usersService.find({ query: { email: event.representation.email } }).then((response) => {
+              if (response.total === 0) {
+                console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
+                app.getService('users').create({
+                  email: event.representation.email,
+                  password: event.representation.username + '-Pass;word1',
+                  name: event.representation.username,
+                  keycloakId: keycloakId,
+                })
+              } else {
+                console.log('User already exists: %s', event.representation.email)
+                console.log('Updating user.keycloadId...')
+                const user = response.data[0]
+                user.keycloakId = keycloakId
+                app.getService('users').patch(user)
+              }
+            })
+          }
+        },
+      ],
+      deleteUser: [
+        async (context) => {
+          const event = context.arguments[0];
           // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
           // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
           const keycloakId = event.resourcePath.substr(6)
@@ -100,9 +105,10 @@ export default async function () {
               app.getService('users').remove(user._id)
             }
           })
-      }
-    }]
-  }))
+        },
+      ],
+    },
+  });
 // <<<
 
     await app.configure(kdkCore)
