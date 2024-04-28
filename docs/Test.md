@@ -46,7 +46,7 @@ It also stores a kApp access token
 in a local `cache.json` file.
 
 
-> For information, is the way to get an access token for the kApp:
+> For information, here is the way to get an access token for the kApp:
 > 
 > ````
 > curl --location 'http://localhost:8082/api/authentication' \
@@ -102,10 +102,19 @@ has increased by 1. That means the communication
 between the Keycloak listener and the Feathers
 endpoint is functional.
 
+> This test uses a kApp access token. If you
+> did not run previous tests, you will have to
+> provide the access token through the command line:
+> 
+> ```
+> export KAPP_ACCESS_TOKEN=<your access token>
+> ```
+
+
 
 During the test,
-a `cache.json` file is stored locally, to pass
-information to the next pass. It contains
+the `cache.json` file is updated, to pass
+information to the next test. It contains
 the data randomly generated used during the tests.
 
 Example of such a `cache.json` file:
@@ -142,20 +151,21 @@ This ensures that the user has been created in
 the kApp’s database through the Feathers service.
 
 
-For now you must find a _second_ access token that
+For now a _second_ access token 
+is emitted (corresponding to an authorization
+for the second user), that
 will be used to run the “delete user” test.
 
-````
-$ export KAPP_ACCESS_TOKEN2=<your access token>
-$ npx mocha keycloak_delete_user_previously_created.js
-````
+This access token is stored in `cache.json`
+by the test.
 
-This seventh test deletes in Keycloak
-the user previously created, and checks via
-the kApp’s API that the user count has been
-decreased by 1.
-
-
+> If you didn’t run that test, you must provide
+> the access token through the command line:
+> 
+> ```
+> $ export KAPP_ACCESS_TOKEN2=<your access token2>
+> ```
+>
 > Here is a way to get this second access token for the kApp:
 > 
 > ````
@@ -169,6 +179,18 @@ decreased by 1.
 > ````
 > 
 > Those are the values from `cache.json`.
+
+At this point, you can run:
+
+````
+$ npx mocha keycloak_delete_user_previously_created.js
+````
+
+This seventh test deletes in Keycloak
+the user previously created, and checks via
+the kApp’s API that the user count has been
+decreased by 1.
+
 
 
 At this point everything should be fine.
