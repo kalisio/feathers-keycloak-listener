@@ -8,7 +8,7 @@ version: '3.8'
 services:
 
   keycloak_event_gateway:
-      image: kalisio/keycloak-event-gateway
+      image: registry.gitlab.com/avcompris/kalisio/keycloak-event-gateway/kalisio/keycloak-event-gateway
       environment:
         TARGET_DIR: /kalisio/artifacts
       volumes:
