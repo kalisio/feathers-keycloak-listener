@@ -46,8 +46,6 @@ business logic:
   do we ensure that our two-database system
   is consistent business-wise?_
 
-![xxx](x)
-
 ## Triggered actions
 
 It’s common practice to rely on triggered actions
@@ -134,17 +132,21 @@ along with the full
 amount of business data they were conveying.
 
 
-![xxx](x)
-
 ## How to fix a loss of consistency
 
 
-You will rely heavily on _common ids_.
+You will rely heavily on_common identifiers.
+Hence, the more the better.
 
+Think about:
 
+* usernames
+* e-mail addresses
+* internal ids
 
+You will also rely on command history. Hence,
+the more you logged the actions, the better.
 
-![xxx](x)
 
 
 --

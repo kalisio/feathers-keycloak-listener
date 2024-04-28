@@ -22,7 +22,6 @@ But user deletion is limited to one’s own access
 token. That means no user can delete a user, except
 itself.
 
-![xx](x)
 
 --
 

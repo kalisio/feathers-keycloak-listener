@@ -17,7 +17,14 @@ endpoint to send the JSON to:
 ````
 app.use('/api/keycloak-events', new KeycloakListenerService({
 	app: app
-}))
+}), {
+   methods: [
+     'create',
+     'createUser',
+     'updateUser',
+     'deleteUser'
+   ]
+});
 ````
 
 Here with an example of a `POST /api/keycloak-events`
@@ -39,11 +46,30 @@ methods you want to implement.
 Example:
 
 
-![xxx](x)
 
 ````
-d
+app.getService('keycloak-events').hooks({
+   before: {
+      createUser: [
+        async (context) => {
+          const event = context.arguments[0];
+          
+          ...
+          
+          // Use the event: Acccess to 
+          // event.operationType, event.resourcePath, 
+          // etc.
+          //
+          // See some examples of JSON payloads
+          // in project keycloak-event-gateway
+        },
+      ],
+   }
+});
 ````
+
+
+## Full example
 
 In this project, see the 
 [`services.js`](../test/resources/kApp/api/src/services.js)
