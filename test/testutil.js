@@ -91,7 +91,7 @@ export const context = {
 		console.log('Using %s from the environment or from cache.json...', envVarName);
 		console.log('%s: %s', envVarName, value);
 
-		value
+		return value;
 	},
 };
 
