@@ -44,8 +44,8 @@ services:
   frontend:
       image: tmp/kapp
       build:
-        context: .
-        dockerfile: kApp.Dockerfile
+        context: ..
+        dockerfile: test/kApp.Dockerfile
       command: ./start_frontend.sh
       environment:
         PORT: 8081
@@ -55,8 +55,8 @@ services:
   api:
       image: tmp/kapp
       build:
-        context: .
-        dockerfile: kApp.Dockerfile
+        context: ..
+        dockerfile: test/kApp.Dockerfile
       command: ./start_api.sh
       #command: ls /opt
       depends_on:
