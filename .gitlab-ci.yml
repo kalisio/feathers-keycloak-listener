@@ -29,6 +29,7 @@ mocha:
   before_script:
     - cd ${CI_PROJECT_DIR}/test
     - docker-compose down
+    - docker rmi -f tmp/kapp || true
     - docker-compose up -d mongo frontend keycloak selenium
     - ../scripts/wait_for_docker_container.sh test_mongo_1 "waiting for connections on port 27017"
     - ../scripts/wait_for_docker_container.sh test_frontend_1 "Transpiled JS"
