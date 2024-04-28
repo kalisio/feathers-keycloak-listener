@@ -61,7 +61,7 @@ sent by Keycloak.
 
 ### `createUser (data)`
 
-This methods is triggered by the following
+This method is triggered by the following
 case:
 
 * `eventClass=AdminEvent`
@@ -71,7 +71,7 @@ case:
 
 ### `updateUser (data)`
 
-This methods is triggered by the following
+This method is triggered by the following
 case:
 
 * `eventClass=AdminEvent`
@@ -81,12 +81,30 @@ case:
 
 ### `deleteUser (data)`
 
-This methods is triggered by the following
+This method is triggered by the following
 case:
 
 * `eventClass=AdminEvent`
 * `operationType=DELETE`
 * `resourceType=USER`
+
+
+### `userLogin (data)`
+
+This method is triggered by the following
+case:
+
+* `eventClass=Event`
+* `type=LOGIN`
+
+
+### `userLogout (data)`
+
+This method is triggered by the following
+case:
+
+* `eventClass=Event`
+* `type=LOGOUT`
 
 
 --
