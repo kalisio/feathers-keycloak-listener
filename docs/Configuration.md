@@ -5,7 +5,7 @@ _[Back to the home page](../README.md)
 
 
 
---
+---
 
 # 4. Configuration
 
@@ -80,7 +80,7 @@ given as an example.
 
 
 
--- 
+---
 
 
 _[Back to the home page](../README.md)

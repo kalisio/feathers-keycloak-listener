@@ -2,7 +2,7 @@ _[Back to the home page](../README.md)
 — Previous page: [7. Troubleshooting](./Troubleshooting.md)
 — Next page: [9. FAQ](./FAQ.md)_
 
---
+---
 
 # 8. Known Issues
 
@@ -23,7 +23,7 @@ token. That means no user can delete a user, except
 itself.
 
 
---
+---
 
 
 _[Back to the home page](../README.md)

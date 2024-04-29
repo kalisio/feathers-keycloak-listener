@@ -6,7 +6,7 @@ _[Back to the home page](../README.md)
 
 
 
---
+---
 
 # 7. Troubleshooting
 
@@ -14,7 +14,7 @@ Nothing outside the regular cycle of
 development
 was encountered.
 
---
+---
 
 
 _[Back to the home page](../README.md)

@@ -1,7 +1,7 @@
 _Next Page: [1. Installation and usage](docs/Usage.md)_
 
 
---
+---
 
 # feathers-keycloak-listener
 
@@ -32,7 +32,7 @@ application’s business logic.
 8. [Known Issues](docs/Known_Issues.md)
 9. [FAQ](docs/FAQ.md)
 
---
+---
 
 _Next Page: [1. Installation and usage](docs/Usage.md)_
 

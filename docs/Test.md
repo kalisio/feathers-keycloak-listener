@@ -4,7 +4,7 @@ _[Back to the home page](../README.md)
 — Next page: [7. Troubleshooting](Troubleshooting.md)_
 
 
---
+---
 
 # 6. How to test
 
@@ -282,7 +282,7 @@ See the [`.gitlab-ci.yml`](../.gitlab-ci.yml) configuration.
 
 
 
--- 
+---
 
 _[Back to the home page](../README.md)
 — Previous page: [5. How to deploy locally](Deploy.md)

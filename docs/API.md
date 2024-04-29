@@ -4,7 +4,7 @@ _[Back to the home page](../README.md)
 
 
 
---
+---
 
 # 2. API
 
@@ -107,7 +107,7 @@ case:
 * `type=LOGOUT`
 
 
---
+---
 
 _[Back to the home page](../README.md)
 — Previous page: [1. Installation and usage](./Usage.md)

@@ -3,7 +3,7 @@ _[Back to the home page](../README.md)
 — Next page: [4. Configuration](./Configuration.md)_
 
 
---
+---
 
 # 3. About Business Logic
 
@@ -149,7 +149,7 @@ the more you logged the actions, the better.
 
 
 
---
+---
 
 _[Back to the home page](../README.md)
 — Previous page: [2. API](./API.md)
