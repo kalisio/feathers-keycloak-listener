@@ -116,7 +116,7 @@ Add it to the runtime context of your kApp’s
 API and
 restart the API.
 
-Now you can continue to run the tests:
+Now you can continue the tests:
 
 ````
 $ npx mocha kApp_login_as_kalisio_through_keycloak.js
@@ -204,12 +204,12 @@ by the test.
 > 
 > ````
 > curl --location 'http://localhost:8082/api/authentication' \
-     --header 'Content-Type: application/json' \
-     --data-raw '{
-         "strategy": "local",
-         "email": "petitponeyllhnu4lya8@gmail.com",
-         "password": "petitponeyllhnu4lya8-Pass;word1"
-     }'
+>     --header 'Content-Type: application/json' \
+>     --data-raw '{
+>         "strategy": "local",
+>         "email": "petitponeyllhnu4lya8@gmail.com",
+>         "password": "petitponeyllhnu4lya8-Pass;word1"
+>     }'
 > ````
 > 
 > Those are the values from `cache.json`.
