@@ -47,7 +47,7 @@ $ npx mocha keycloak_tearDown.js
 
 The tests should be run in that order.
 
-You can skip some tests, but then 
+You can skip some tests, but then,
 depending on the current step, you may have to
 provide `KAPP_ACCESS_TOKEN`
 and/or `KAPP_ACCESS_TOKEN2` in the environment.
@@ -78,12 +78,12 @@ in a local `cache.json` file.
 > 
 > ````
 > curl --location 'http://localhost:8082/api/authentication' \
-     --header 'Content-Type: application/json' \
-     --data-raw '{
-         "strategy": "local",
-         "email": "kalisio@kalisio.xyz",
-         "password": "Pass;word1"
-     }'
+>     --header 'Content-Type: application/json' \
+>     --data-raw '{
+>         "strategy": "local",
+>         "email": "kalisio@kalisio.xyz",
+>         "password": "Pass;word1"
+>     }'
 > ````
 
 Now, run:

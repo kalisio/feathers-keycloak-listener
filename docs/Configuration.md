@@ -12,7 +12,8 @@ _[Back to the home page](../README.md)
 ## Endpoint and access token
 
 Your application will define the 
-endpoint to send the JSON to:
+endpoint to send the JSON to, using
+the standard Feathers mechanism:
 
 ````
 app.use('/api/keycloak-events', new KeycloakListenerService({

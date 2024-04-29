@@ -13,7 +13,7 @@ _[Back to the home page](../README.md)
 The only way to trigger the HTTP service
 is through a
 `POST` request to the unique endpoint
-you configured in your app. See [1. Installation and usage](Usage.md).
+you configured in your app. See [3. Configuration](Configuration.md).
 
 The dispatch is performed within the API
 according to the data in the JSON payload itself.
@@ -34,6 +34,8 @@ Business logic methods with predefined events:
 * `createUser (data)`
 * `updateUser (data)`
 * `deleteUser (data)`
+* `userLogin (data)`
+* `userLogout (data)`
 
 
 See the 

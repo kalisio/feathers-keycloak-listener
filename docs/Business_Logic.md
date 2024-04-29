@@ -48,32 +48,31 @@ business logic:
 
 ## Triggered actions
 
-It’s common practice to rely on triggered actions
+It is common practice to rely on triggered actions
 to imagine that, in the system,
-“event A” will
-automatically be followed by “event B”.
+_“event A”_ will
+automatically be followed by _“event B”_.
 
-But in a non-transactional world, e.g. when using
-asynchronous calls, well,
+But in a non-transactional world, e.g. when
+asynchronous calls occur, well,
 desynchronization happens.
 
 And by definition, triggered actions cannot handle
-those cases since those cases
+those cases since they are
 are exceptions from the
-desired behaviour where everything goes smoothly
-trhough triggered actions.
+desired behaviour.
 
 ## Search for consistency
 
 This aspect is orthogonal to the triggered actions
 principle, since:
 
-1. The search for consistency occurs in a differed way;
+1. The search for consistency occurs in a differed time;
 2. It can grab the system as a whole, not at
-   action- and/or at entity-level.
+   action- and/or at entity-level only.
 
 You need to list the sanity checks you would like
-to perform regularly (ideally at once). For instance,
+to perform regularly (ideally as a whole). For instance,
 if your database uses the following attributes for
 the User entity:
 
@@ -99,10 +98,12 @@ between the two?
   
 But then, what if one of the two systems (say, Keycloak)
 was seen as a _master_ and the other as a _slave_?
-Namely, that means the User entries in the application
+Namely, that means the User entries in your application
+database
 should hold a `keycloakId` field, referencing the
 corresponding entry in Keycloak. This is actually
 a good idea… if you can enforce that this `keycloakId`
+field
 will remain consistent.
 
 ## How to prevent the loss of consistency
@@ -112,7 +113,7 @@ all triggered actions went well.
 
 So we can think that if a loss of consistency is
 detected, it is only a matter of auditing the
-actions (or “commands”) sent to the system, and
+actions (or _commands_) sent to the system, and
 see at what point the commands started to deviate
 from the desired behaviour. Then if we re-run the
 command in a fixed environment, consistency will
@@ -120,13 +121,16 @@ be met.
 
 That means the _prevention_ of the loss of
 consistency relies on the _perfect knowledge_
-of all business actions (or “commands”) that
+of all business actions (or _commands_) that
 are sent to the system.
 
-This is a higher level of logging in your
-`app.log.1` log-rotate directory. This means
+This is a higher level of logging than your
+regular
+`app.log.1` log-rotate directory. This 
+rather means
 auditable business logs, with the ability to
-replay a series of commands, which means the
+replay a series of commands.
+That means the
 logged commands are stored technically,
 along with the full
 amount of business data they were conveying.
@@ -135,7 +139,7 @@ amount of business data they were conveying.
 ## How to fix a loss of consistency
 
 
-You will rely heavily on_common identifiers.
+You will rely heavily on _common identifiers_.
 Hence, the more the better.
 
 Think about:
@@ -145,7 +149,7 @@ Think about:
 * internal ids
 
 You will also rely on command history. Hence,
-the more you logged the actions, the better.
+the more you have logged the actions, the better.
 
 
 

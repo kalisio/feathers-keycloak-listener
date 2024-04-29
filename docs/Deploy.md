@@ -14,6 +14,16 @@ deployment procedure.
 The module should be included and configured
 within your application’s code.
 
+Generally, you will start your application like this:
+
+```shell
+$ yarn install
+$ yarn link @kalisio/feathers-keycloak-listener
+$ yarn dev
+```
+
+
+
 ---
 
 
