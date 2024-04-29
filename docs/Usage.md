@@ -3,7 +3,7 @@ _[Back to the home page](../README.md)
 — Next page: [2. API](./API.md)_
 
 
---
+---
 
 # 1. Installation and usage
 
@@ -71,7 +71,7 @@ app.use('/api/keycloak-events', new KeycloakListenerService({
 
 
 
---
+---
 
 _[Back to the home page](../README.md)
 — Previous page: [feathers-keycloak-listener](../README.md)
