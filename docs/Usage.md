@@ -37,38 +37,7 @@ $ yarn link @kalisio/feathers-keycloak-listener
 
 ## Setup the service
 
-Assuming you have setup a Feathers app:
-
-````
-// (... Import Feathers stuff)
-import KeycloakListenerService from '@kalisio/feathers-keycloak-listener/lib/service.js'
-
-...
-
-app.use('/api/keycloak-events', new KeycloakListenerService({
-	app: app
-}))
-````
-
-This will actually do nothing apart from some
-logging in the console.
-
-To add some business logic, you will have to do this:
-
-````
-app.use('/api/keycloak-events', new KeycloakListenerService({
-	app: app,
-	triggers: [{
-       eventClass: 'AdminEvent',
-       operationType: 'CREATE',
-       resourceType: 'USER',
-       action: (event) => {
-           console.log('Do something with: ' + event.representation.username)
-       }
-   }]
-}))
-````
-
+See the [4. Configuration](Configuration.md) page.
 
 
 ---
