@@ -47,40 +47,40 @@ export default async function () {
       createUser: [
         async (context) => {
           const event = context.arguments[0];
-          if (event.representation.email) {
+          if (event.value.email) {
             // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
             // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
             const keycloakId = event.resourcePath.substr(6)
-            console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
+            console.log('Creating user: %s (%s)', event.value.email, event.value.username)
             app.getService('users').create({
-              email: event.representation.email,
-              password: event.representation.username + '-Pass;word1',
-              name: event.representation.username,
+              email: event.value.email,
+              password: event.value.username + '-Pass;word1',
+              name: event.value.username,
               keycloakId: keycloakId,
             })
           } else {
-            console.log('Cannot create user with no email: %s', event.representation.username)
+            console.log('Cannot create user with no email: %s', event.value.username)
           }
         },
       ],
       updateUser: [
         async (context) => {
           const event = context.arguments[0];
-          if (event.representation.email) {
+          if (event.value.email) {
             // e.g. keycloakResourcePath: 'users/f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
             // e.g. keycloakId: 'f3814113-a3ac-424a-b8e2-8dfba5e7b1b7'
             const keycloakId = event.resourcePath.substr(6)
-            usersService.find({ query: { email: event.representation.email } }).then((response) => {
+            usersService.find({ query: { email: event.value.email } }).then((response) => {
               if (response.total === 0) {
-                console.log('Creating user: %s (%s)', event.representation.email, event.representation.username)
+                console.log('Creating user: %s (%s)', event.value.email, event.value.username)
                 app.getService('users').create({
-                  email: event.representation.email,
-                  password: event.representation.username + '-Pass;word1',
-                  name: event.representation.username,
+                  email: event.value.email,
+                  password: event.value.username + '-Pass;word1',
+                  name: event.value.username,
                   keycloakId: keycloakId,
                 })
               } else {
-                console.log('User already exists: %s', event.representation.email)
+                console.log('User already exists: %s', event.value.email)
                 console.log('Updating user.keycloadId...')
                 const user = response.data[0]
                 user.keycloakId = keycloakId
