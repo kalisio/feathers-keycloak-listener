@@ -32,13 +32,3 @@ node_modules
 # Drawio backup
 .bkp
 .dtmp
-
-# test tmp files
-test/tmp
-
-# yarn
-yarn.lock
-
-# Eclipse
-/\.project
-/\.classpath
