@@ -1,45 +1,61 @@
-_Next Page: [1. Installation and usage](docs/Usage.md)_
-
-
----
-
 # feathers-keycloak-listener
 
-> A Feathers module that listens to the Keycloak
-> events sent in JSON by the 
-> [keycloak-event-gateway](https://github.com/kalisio/keycloak-event-gateway) plugin.
+[![Latest Release](https://img.shields.io/github/v/tag/kalisio/feathers-keycloak-listener?sort=semver&label=latest)](https://github.com/kalisio/feathers-keycloak-listener/releases)
+[![Build Status](https://github.com/kalisio/feathers-keycloak-listener/actions/workflows/main.yaml/badge.svg)](https://github.com/kalisio/feathers-keycloak-listener/actions/workflows/main.yaml)
+[![Code Climate](https://codeclimate.com/github/kalisio/feathers-keycloak-listener/badges/gpa.svg)](https://codeclimate.com/github/kalisio/feathers-keycloak-listener)
+[![Test Coverage](https://codeclimate.com/github/kalisio/feathers-keycloak-listener/badges/coverage.svg)](https://codeclimate.com/github/kalisio/feathers-keycloak-listener/coverage)
+[![Download Status](https://img.shields.io/npm/dm/@kalisio/feathers-keycloak-listener.svg?style=flat-square)](https://www.npmjs.com/package/@kalisio/feathers-keycloak-listener)
+
+> `feathers-keycloak-listener` facilitates the management of [Keycloak events](https://www.keycloak.org/docs-api/22.0.5/javadocs/org/keycloak/events/EventType.html) emitted by [keycloak-event-gateway](https://github.com/kalisio/keycloak-event-gateway) plugin.
+
+## Usage
+
+### Installation
+
+```shell
+npm install @kalisio/feathers-keycloak-listener --save
+```
+
+or
+
+```shell
+yarn add @kalisio/feathers-keycloak-listener
+```
+
+### Example
+
+_TODO_
 
 
-## Presentation
+## API
 
-This module provides a Feathers service with
-predefined business methods holding no implementation,
-to which you can attach hooks that
-will contain your
-application’s business logic.
+#### constructor (options)
 
+Create an instance of the service with the given options:
 
+| Parameter | Description | Required |
+|---|---|---|
+|`usersServicePath` | the path to the `users` service. Default value is `users` | no |
 
-## This documentation
+#### create (data, params)
 
-1. [Installation and usage](docs/Usage.md)
-2. [API](docs/API.md)
-3. [About Business Logic](docs/Business_Logic.md)
-4. [Configuration](docs/Configuration.md)
-5. [How to deploy locally](docs/Deploy.md)
-6. [How to test](docs/Test.md)
-7. [Troubleshooting](docs/Troubleshooting.md)
-8. [Known Issues](docs/Known_Issues.md)
-9. [FAQ](docs/FAQ.md)
+Handle an event forwarded by the [keycloak-event-gateway](https://github.com/kalisio/keycloak-event-gateway) plugin.
 
----
+## Hooks
 
-_Next Page: [1. Installation and usage](docs/Usage.md)_
+_TODO_
 
+## License
 
+Copyright (c) 2017-20xx Kalisio
 
+Licensed under the [MIT license](LICENSE).
 
+## Authors
 
+This project is sponsored by 
+
+[![Kalisio](https://s3.eu-central-1.amazonaws.com/kalisioscope/kalisio/kalisio-logo-black-256x84.png)](https://kalisio.com)
 
 
 
