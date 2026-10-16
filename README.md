@@ -8,7 +8,7 @@
 > [!IMPORTANT]
 > This package has moved to the [`feathers-ekosystem`](https://github.com/kalisio/feathers-ekosystem) monorepo.
 >
-> Please use and follow the version maintained in `packages/feathers-s3` from now on.
+> Please use and follow the version maintained in `packages/feathers-keycloak-listener` from now on.
 >
 > This repository is no longer maintained.
 
