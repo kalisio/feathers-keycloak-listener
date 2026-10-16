@@ -1,15 +1,19 @@
-_Next Page: [1. Installation and usage](docs/Usage.md)_
-
-
----
-
 # feathers-keycloak-listener
 
-> A Feathers module that listens to the Keycloak
-> events sent in JSON by the 
-> [keycloak-event-gateway](https://github.com/kalisio/keycloak-event-gateway) plugin.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Download Status](https://img.shields.io/npm/dm/@kalisio/feathers-s3.svg?style=flat-square)](https://www.npmjs.com/package/@kalisio/feathers-s3)
 
+>  A Feathers module that listens to the Keycloak events sent in JSON by the [keycloak-event-gateway](https://github.com/kalisio/keycloak-event-gateway) plugin
 
+> [!IMPORTANT]
+> This package has moved to the [`feathers-ekosystem`](https://github.com/kalisio/feathers-ekosystem) monorepo.
+>
+> Please use and follow the version maintained in `packages/feathers-s3` from now on.
+>
+> This repository is no longer maintained.
+
+<details> <summary>Legacy documentation</summary>
+  
 ## Presentation
 
 This module provides a Feathers service with
@@ -17,8 +21,6 @@ predefined business methods holding no implementation,
 to which you can attach hooks that
 will contain your
 application’s business logic.
-
-
 
 ## This documentation
 
@@ -32,11 +34,21 @@ application’s business logic.
 8. [Known Issues](docs/Known_Issues.md)
 9. [FAQ](docs/FAQ.md)
 
----
+</details>
 
-_Next Page: [1. Installation and usage](docs/Usage.md)_
+## License
 
+Licensed under the [MIT license](LICENSE).
 
+Copyright (c) 2024-present [Kalisio](https://kalisio.com)
+
+<a href="https://kalisio.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://kalisio.github.io/kalisioscope/kalisio/kalisio-logo-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://kalisio.github.io/kalisioscope/kalisio/kalisio-logo-light.svg">
+    <img alt="Kalisio" src="https://kalisio.github.io/kalisioscope/kalisio/kalisio-logo-light.svg" height="96">
+  </picture>
+</a>
 
 
 
